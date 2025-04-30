@@ -5,13 +5,13 @@
     "scripts": {
         "dev": "next dev --turbopack",
         "build": "next build",
-        "build:prod": "prisma generate && prisma migrate deploy && next build",
         "start": "next start",
         "lint": "next lint",
         "format": "prettier --write ./src",
         "db:generate": "prisma generate",
         "db:migrate": "prisma migrate dev",
-        "db:reset": "prisma migrate reset"
+        "db:reset": "prisma migrate reset",
+        "postinstall": "prisma generate && prisma migrate deploy"
     },
     "dependencies": {
         "@paypal/checkout-server-sdk": "^1.0.3",
