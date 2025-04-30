@@ -1,6 +1,9 @@
 import { auth } from "@/lib/auth";
 
-export default auth(async (req) => {
+export default auth(async (
+    // req
+
+) => {
     // console.log(req.auth);
 });
 
