@@ -19,4 +19,8 @@
     button {
         @apply cursor-pointer;
     }
+
+    input {
+        @apply border px-2 py-1;
+    }
 }

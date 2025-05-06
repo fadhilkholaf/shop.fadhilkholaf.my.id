@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 import { auth } from "@/lib/auth";
-import { getRepositoryCollaborators, getUser } from "@/actions/github";
+import { getRepositoryCollaborators, getGithubUser } from "@/actions/github";
 import { RequestCollaborator } from "@/components/RequestCollaborator";
 // import { createPaypalOrder } from "@/actions/paypal";
 
@@ -12,7 +12,7 @@ export default async function RootPage() {
         return null;
     }
 
-    const user = await getUser(session.user.githubId);
+    const user = await getGithubUser(session.user.githubId);
 
     if (!user) {
         return null;

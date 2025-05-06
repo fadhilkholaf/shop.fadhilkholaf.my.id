@@ -4,9 +4,12 @@ import Form from "next/form";
 
 import { useSession } from "next-auth/react";
 import { createPaypalOrder } from "@/actions/paypal";
+import { getGithubUser } from "@/actions/github";
 
 export default function ClientPage() {
     const { data: session, update } = useSession();
+
+    // console.log(session);
 
     if (!session) {
         return null;
@@ -36,7 +39,7 @@ export default function ClientPage() {
             </Form>
             <Form
                 action={async function () {
-                    await createPaypalOrder();
+                    // await createPaypalOrder();
                 }}
             >
                 {/* <div>
@@ -49,6 +52,15 @@ export default function ClientPage() {
                     />
                 </div> */}
                 <button type="submit">Create Order</button>
+            </Form>
+            <Form
+                action={async function () {
+                    const user = await getGithubUser(session.user.githubId);
+
+                    console.log(user);
+                }}
+            >
+                <button type="submit">Revoke credentials</button>
             </Form>
         </main>
     );

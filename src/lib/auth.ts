@@ -28,11 +28,6 @@ declare module "next-auth/jwt" {
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-    theme: {
-        brandColor: "#fccee8",
-        colorScheme: "light",
-        logo: "https://95k1y8fb5v.ufs.sh/f/EyY37ktHRd8rEl1LgntHRd8rjI3XZ1LO2eloC0sGA5tDNJSU",
-    },
     providers: [GitHub],
     callbacks: {
         async signIn({ user, profile }) {
@@ -42,7 +37,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             if (!existingUser) {
                 await createUser({
                     githubId: Number(profile!.id),
-                    email: user.email!,
                     name: user.name!,
                     image: user.image!,
                 });
@@ -92,5 +86,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 },
             };
         },
+    },
+    pages: {
+        newUser: "/not-found",
+        signIn: "/not-found",
+        signOut: "/not-found",
+        error: "/error",
+    },
+    theme: {
+        brandColor: "#fccee8",
+        colorScheme: "light",
+        logo: "https://95k1y8fb5v.ufs.sh/f/EyY37ktHRd8rEl1LgntHRd8rjI3XZ1LO2eloC0sGA5tDNJSU",
     },
 });

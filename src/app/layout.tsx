@@ -6,6 +6,7 @@ import "./globals.css";
 
 import Link from "next/link";
 import PaypalWrapper from "@/components/wrapper/PaypalWrapper";
+import Navbar from "@/components/Navbar";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -22,17 +23,10 @@ export default function RootLayout({
             <body className={`antialiased`}>
                 <SessionProvider>
                     <PaypalWrapper>
-                        <nav>
-                            <ul>
-                                <li>
-                                    <Link href="/">server</Link>
-                                </li>
-                                <li>
-                                    <Link href="/client">client</Link>
-                                </li>
-                            </ul>
-                        </nav>
-                        {children}
+                        <main className="h-[150vh]">
+                            <Navbar />
+                            <main className="mt-16">{children}</main>
+                        </main>
                     </PaypalWrapper>
                 </SessionProvider>
             </body>
