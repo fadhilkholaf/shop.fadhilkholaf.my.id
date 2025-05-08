@@ -4,6 +4,7 @@
     "": {
       "name": "trying-to-make-my-own-website-for-selling-website-template",
       "dependencies": {
+        "@paypal/paypal-js": "^8.2.0",
         "@paypal/paypal-server-sdk": "^1.0.0",
         "@paypal/react-paypal-js": "^8.8.3",
         "@prisma/client": "^6.7.0",

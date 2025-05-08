@@ -4,10 +4,12 @@ import { UploadApiResponse } from "cloudinary";
 
 import cloudinary from "@/lib/cloudinary";
 
+type UploadImageType = "profile" | "product";
+
 export async function uploadImage(
     file: File,
+    type: UploadImageType,
     fileName: string,
-    type: "profile" | "product",
 ) {
     try {
         const fileBuffer = Buffer.from(await file.arrayBuffer());
@@ -44,14 +46,18 @@ export async function uploadImage(
     }
 }
 
-export const deleteImage = async (id: string) => {
+export const deleteImage = async (type: UploadImageType, fileName: string) => {
     try {
-        await cloudinary.uploader.destroy(id);
+        await cloudinary.uploader.destroy(`shop/${type}/${fileName}`);
 
-        return { success: true, message: "Image deleted" };
+        return { success: true, message: "Image deleted!", data: null };
     } catch (error) {
         console.log(error);
 
-        return null;
+        return {
+            success: false,
+            message: "Unexpected error deleting image!",
+            data: null,
+        };
     }
 };

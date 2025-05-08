@@ -20,7 +20,10 @@ export async function createPaypalOrder(products: Product[]) {
             },
         });
 
-        if (!existingProducts.length) {
+        if (
+            !existingProducts.length ||
+            existingProducts.length !== products.length
+        ) {
             return null;
         }
 
@@ -45,13 +48,15 @@ export async function createPaypalOrder(products: Product[]) {
                         },
                         items: products.map(function (product) {
                             return {
-                                name: product.publicId,
+                                name: product.name,
                                 category: ItemCategory.DigitalGoods,
                                 quantity: "1",
                                 unitAmount: {
                                     currencyCode: "USD",
                                     value: product.price.toString(),
                                 },
+                                imageUrl: product.image,
+                                url: `https://shop.fadhilkholaf.my.id/products/${product.publicId}`,
                             };
                         }),
                     },
@@ -75,14 +80,26 @@ export async function capturePaypalOrder(id: string) {
     try {
         const response = await paypalOrder.captureOrder({ id });
 
-        if (response.statusCode >= 300) {
-            return null;
+        if (response.statusCode >= 400) {
+            return {
+                success: false,
+                message: "Error capturing order!",
+                data: null,
+            };
         }
 
-        return response;
+        return {
+            success: true,
+            message: "Capture order success!",
+            data: response,
+        };
     } catch (error) {
         console.error(error);
 
-        return null;
+        return {
+            success: false,
+            message: "Unexpected error capturing order!",
+            data: null,
+        };
     }
 }

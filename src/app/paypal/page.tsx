@@ -2,7 +2,15 @@
 
 import { useEffect, useState } from "react";
 
-import { PayPalButtons } from "@paypal/react-paypal-js";
+import type { OnApproveData } from "@paypal/paypal-js";
+import {
+    PayPalButtons,
+    PayPalCardFieldsForm,
+    PayPalCardFieldsProvider,
+    PayPalCVVField,
+    PayPalExpiryField,
+    PayPalNumberField,
+} from "@paypal/react-paypal-js";
 
 import { capturePaypalOrder, createPaypalOrder } from "@/actions/paypal";
 import { getAllProduct } from "@/query/product";
@@ -31,7 +39,7 @@ export default function PaypalPage() {
         return order.result.id;
     }
 
-    async function onApprove(data: any) {
+    async function onApprove(data: OnApproveData) {
         const capture = await capturePaypalOrder(data.orderID);
 
         if (!capture) {
@@ -54,6 +62,15 @@ export default function PaypalPage() {
                     onApprove={onApprove}
                     onError={onError}
                 />
+                <PayPalCardFieldsProvider
+                    createOrder={createOrder}
+                    onApprove={onApprove}
+                    onError={onError}
+                >
+                    <PayPalNumberField />
+                    <PayPalExpiryField />
+                    <PayPalCVVField />
+                </PayPalCardFieldsProvider>
                 <ul className="mt-16">
                     {products.map(function (product, i) {
                         return (

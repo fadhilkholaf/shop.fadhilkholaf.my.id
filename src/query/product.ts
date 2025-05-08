@@ -3,14 +3,15 @@
 import { Prisma } from "@/prisma/generated";
 
 import prisma from "@/lib/prisma";
-import { generatePublicId } from "@/utils/public-id";
 
-export async function createProduct(
-    data: Omit<Prisma.ProductCreateInput, "publicId">,
-) {
+export async function createProduct(data: Prisma.ProductCreateInput) {
     return await prisma.product.create({
-        data: { publicId: generatePublicId(), ...data },
+        data,
     });
+}
+
+export async function getProduct(where: Prisma.ProductWhereUniqueInput) {
+    return await prisma.product.findUnique({ where });
 }
 
 export async function getAllProduct(where?: Prisma.ProductWhereInput) {

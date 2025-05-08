@@ -22,6 +22,15 @@ export default async function Navbar() {
                     <Link href="/paypal">paypal</Link>
                 </li>
                 <li>
+                    <Link href="/products">Products</Link>
+                </li>
+                <li>
+                    <Link href="/cart">Cart</Link>
+                </li>
+                <li>
+                    <Link href="/order">Order</Link>
+                </li>
+                <li>
                     <Link href="/admin">Admin</Link>
                 </li>
                 <li>

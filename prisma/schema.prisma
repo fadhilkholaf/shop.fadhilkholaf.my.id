@@ -9,16 +9,16 @@ datasource db {
 }
 
 model User {
-    id        Int        @id @default(autoincrement())
-    publicId  String     @unique
-    githubId  Int        @unique
-    role      Role       @default(user)
+    id        Int       @id @default(autoincrement())
+    publicId  String    @unique
+    githubId  Int       @unique
+    role      Role      @default(user)
     name      String
     image     String
-    createdAt DateTime   @default(now())
-    updatedAt DateTime   @updatedAt
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
     products  Product[]
-    cartItems CartItem[]
+    carts     Cart[]
 }
 
 enum Role {
@@ -27,40 +27,39 @@ enum Role {
 }
 
 model Product {
-    id           Int        @id @default(autoincrement())
-    publicId     String     @unique
-    repositoryId Int        @unique
+    id           Int      @id @default(autoincrement())
+    publicId     String   @unique
+    repositoryId Int      @unique
     name         String
     image        String
     price        Int
     userId       Int
-    user         User       @relation(fields: [userId], references: [id])
-    createdAt    DateTime   @default(now())
-    updatedAt    DateTime   @updatedAt
-    cartItems    CartItem[]
+    user         User     @relation(fields: [userId], references: [id])
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
+    carts        Cart[]
 }
 
-model CartItem {
-    id        Int      @id @default(autoincrement())
-    publicId  String   @unique
+model Cart {
+    id        Int       @id @default(autoincrement())
+    publicId  String    @unique
     userId    Int
-    user      User     @relation(fields: [userId], references: [id])
-    productId Int
-    product   Product  @relation(fields: [productId], references: [id])
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    orders    Order[]
+    user      User      @relation(fields: [userId], references: [id])
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    products  Product[]
+    order     Order?
 }
 
 model Order {
-    id         Int        @id @default(autoincrement())
-    publicId   String     @unique
-    orderId    String     @unique
-    cartItemId Int
-    status     Status
-    createdAt  DateTime   @default(now())
-    updatedAt  DateTime   @updatedAt
-    cartItems  CartItem[]
+    id        Int      @id @default(autoincrement())
+    publicId  String   @unique
+    orderId   String   @unique
+    cartId    Int      @unique
+    cart      Cart     @relation(fields: [cartId], references: [id])
+    status    Status
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 enum Status {
