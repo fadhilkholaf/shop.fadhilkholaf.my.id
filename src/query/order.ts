@@ -6,9 +6,11 @@ import { generatePublicId } from "@/utils/public-id";
 
 export async function createOrder(
     data: Omit<Prisma.OrderCreateInput, "publicId">,
+    include?: Prisma.OrderInclude,
 ) {
     return await prisma.order.create({
         data: { publicId: generatePublicId(), ...data },
+        include,
     });
 }
 

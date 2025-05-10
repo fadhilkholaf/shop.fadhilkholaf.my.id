@@ -1,9 +1,12 @@
+import Form from "next/form";
+import Image from "next/image";
+import { notFound } from "next/navigation";
+
+import { createOrderAction } from "@/actions/order";
 import { auth } from "@/lib/auth";
 import { Prisma } from "@/prisma/generated";
-import { notFound } from "next/navigation";
-import Form from "next/form";
 import { getAllCart } from "@/query/cart";
-import { createOrderAction } from "@/actions/order";
+import CheckOutButton from "../order/_components/CheckOutButton";
 
 export default async function UserPage() {
     const session = await auth();
@@ -13,29 +16,35 @@ export default async function UserPage() {
     }
 
     const carts = (await getAllCart(
-        {
-            AND: [
-                { user: { githubId: session.user.githubId } },
-                { order: null },
-            ],
-        },
+        { user: { githubId: session.user.githubId }, order: null },
         { products: true },
     )) as Prisma.CartGetPayload<{ include: { products: true } }>[];
 
     return (
         <>
-            <h1>User Page</h1>
-
+            <h1>Cart Page</h1>
             <ul>
                 {carts.map(function (cart, i) {
                     return (
                         <ul key={i}>
                             <ul>
                                 {cart.products.map(function (product, j) {
-                                    return <li key={j}>{product.name}</li>;
+                                    return (
+                                        <li key={j}>
+                                            <h1>{product.name}</h1>
+                                            <Image
+                                                src={product.image}
+                                                alt={product.name}
+                                                width={500}
+                                                height={500}
+                                                priority
+                                            />
+                                        </li>
+                                    );
                                 })}
                             </ul>
-                            <Form
+                            <CheckOutButton cart={cart} />
+                            {/* <Form
                                 action={async function () {
                                     "use server";
 
@@ -46,7 +55,7 @@ export default async function UserPage() {
                                 }}
                             >
                                 <button type="submit">Create Order</button>
-                            </Form>
+                            </Form> */}
                         </ul>
                     );
                 })}

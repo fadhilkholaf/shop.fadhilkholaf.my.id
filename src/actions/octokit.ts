@@ -1,8 +1,10 @@
 "use server";
 
 import { octokit } from "@/lib/octokit";
+import { GitHubRepository } from "@/types/octokit";
+import { RequestError } from "octokit";
 
-async function getMe() {
+async function getGitHubAuthenticatedUser() {
     try {
         const { data } = await octokit.request("GET /user", {
             headers: {
@@ -18,10 +20,10 @@ async function getMe() {
     }
 }
 
-export async function getGithubUser(id: number) {
+export async function getGitHubUserById(account_id: number) {
     try {
-        const { data } = await octokit.request("GET /user/{id}", {
-            id,
+        const { data } = await octokit.request("GET /user/{account_id}", {
+            account_id,
             headers: {
                 "X-GitHub-Api-Version": "2022-11-28",
             },
@@ -35,16 +37,16 @@ export async function getGithubUser(id: number) {
     }
 }
 
-export async function getGithubRepository(repo: string) {
+export async function getGitHubRepository(repo: string) {
     try {
-        const me = await getMe();
+        const gitHubAuthenticatedUser = await getGitHubAuthenticatedUser();
 
-        if (!me) {
+        if (!gitHubAuthenticatedUser) {
             return null;
         }
 
         const { data } = await octokit.request("GET /repos/{owner}/{repo}", {
-            owner: me.login,
+            owner: gitHubAuthenticatedUser.login,
             repo,
             headers: {
                 "X-GitHub-Api-Version": "2022-11-28",
@@ -59,14 +61,17 @@ export async function getGithubRepository(repo: string) {
     }
 }
 
-export async function getGithubRepositoryById(id: number) {
+export async function getGitHubRepositoryById(repository_id: number) {
     try {
-        const { data } = await octokit.request("GET /repositories/{id}", {
-            id,
-            headers: {
-                "X-GitHub-Api-Version": "2022-11-28",
+        const { data } = (await octokit.request(
+            "GET /repositories/{repository_id}",
+            {
+                repository_id,
+                headers: {
+                    "X-GitHub-Api-Version": "2022-11-28",
+                },
             },
-        });
+        )) as GitHubRepository;
 
         return data;
     } catch (error) {
@@ -76,28 +81,33 @@ export async function getGithubRepositoryById(id: number) {
     }
 }
 
-export async function getRepositoryCollaborators(repo: string) {
+export async function getIsCollaborator(repo: string, username: string) {
     try {
-        const me = await getMe();
+        const gitHubAuthenticatedUser = await getGitHubAuthenticatedUser();
 
-        if (!me) {
+        if (!gitHubAuthenticatedUser) {
             return null;
         }
 
-        const { data } = await octokit.request(
-            "GET /repos/{owner}/{repo}/collaborators",
+        const { status } = await octokit.request(
+            "GET /repos/{owner}/{repo}/collaborators/{username}",
             {
-                owner: me.login,
+                owner: gitHubAuthenticatedUser.login,
                 repo,
+                username,
                 headers: {
                     "X-GitHub-Api-Version": "2022-11-28",
                 },
             },
         );
 
-        return data;
+        return status;
     } catch (error) {
         console.log(error);
+
+        if (error instanceof RequestError) {
+            return null;
+        }
 
         return null;
     }
@@ -108,16 +118,16 @@ export async function addRepositoryCollaborator(
     username: string,
 ) {
     try {
-        const me = await getMe();
+        const gitHubAuthenticatedUser = await getGitHubAuthenticatedUser();
 
-        if (!me) {
+        if (!gitHubAuthenticatedUser) {
             return null;
         }
 
         const { data } = await octokit.request(
             "PUT /repos/{owner}/{repo}/collaborators/{username}",
             {
-                owner: me.login,
+                owner: gitHubAuthenticatedUser.login,
                 repo,
                 username,
                 permission: "pull",

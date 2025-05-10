@@ -1,6 +1,6 @@
 "use client";
 
-import { addRepositoryCollaborator } from "@/actions/github";
+import { addRepositoryCollaborator } from "@/actions/octokit";
 import Form from "next/form";
 
 export function RequestCollaborator({

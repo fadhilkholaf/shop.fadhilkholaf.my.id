@@ -7,7 +7,7 @@ import { createProductSchema } from "@/schema/product";
 import { generatePublicId } from "@/utils/public-id";
 
 import { deleteImage, uploadImage } from "./cloudinary";
-import { getGithubRepository } from "./github";
+import { getGitHubRepository } from "./octokit";
 
 export async function createProductAction(formData: FormData) {
     const publicId = generatePublicId();
@@ -35,7 +35,7 @@ export async function createProductAction(formData: FormData) {
             };
         }
 
-        const existingRepository = await getGithubRepository(
+        const existingRepository = await getGitHubRepository(
             parsedFormData.data.repo,
         );
 

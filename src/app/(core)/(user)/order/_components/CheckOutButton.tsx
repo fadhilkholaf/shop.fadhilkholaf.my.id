@@ -1,13 +1,27 @@
 "use client";
 
+import { captureOrderAction, createOrderAction } from "@/actions/order";
+import { Prisma } from "@/prisma/generated";
 import { OnApproveData } from "@paypal/paypal-js";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 
-import { checkOutOrderAction } from "@/actions/order";
+export default function CheckOutButton({
+    cart,
+}: {
+    cart: Prisma.CartGetPayload<{ include: { products: true } }>;
+}) {
+    async function createOrder() {
+        const response = await createOrderAction(cart);
 
-export default function CheckOutButton({ id }: { id: string }) {
+        if (!response.success || !response.data || !response.data.id) {
+            throw new Error(response.message);
+        }
+
+        return response.data.id;
+    }
+
     async function onApprove(data: OnApproveData) {
-        const capture = await checkOutOrderAction(data.orderID);
+        const capture = await captureOrderAction(data.orderID, cart);
 
         if (!capture.data || !capture.success) {
             throw new Error(capture.message);
@@ -20,9 +34,7 @@ export default function CheckOutButton({ id }: { id: string }) {
 
     return (
         <PayPalButtons
-            createOrder={async function () {
-                return id;
-            }}
+            createOrder={createOrder}
             onApprove={onApprove}
             onError={onError}
         />

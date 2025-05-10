@@ -16,12 +16,17 @@ export async function addToCartAction(product: Product) {
             };
         }
 
-        const availableCart = await getAllCart({
-            AND: [
-                { user: { githubId: session.user.githubId } },
-                { order: null },
-            ],
-        });
+        const availableCart = (await getAllCart(
+            {
+                AND: [
+                    { user: { githubId: session.user.githubId } },
+                    {
+                        order: null,
+                    },
+                ],
+            },
+            { order: true },
+        )) as Prisma.CartGetPayload<{ include: { order: true } }>[];
 
         if (!availableCart.length) {
             const createdCart = await createCart({

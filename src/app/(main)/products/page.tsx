@@ -1,10 +1,23 @@
 import Image from "next/image";
 import Link from "next/link";
 
+// import { auth } from "@/lib/auth";
 import { getAllProduct } from "@/query/product";
 
 export default async function ProductsPage() {
+    // const session = await auth();
+
     const products = await getAllProduct();
+    // session
+    //     ? {
+    //           carts: {
+    //               none: {
+    //                   user: { githubId: session.user.githubId },
+    //                   order: { isNot: null },
+    //               },
+    //           },
+    //       }
+    //     : undefined,
 
     return (
         <>
@@ -18,10 +31,10 @@ export default async function ProductsPage() {
                                 <Image
                                     src={product.image}
                                     alt={product.name}
-                                    width={500}
-                                    height={500}
+                                    width={1024}
+                                    height={1024}
                                     priority
-                                    className="h-fit max-h-[500px] w-fit max-w-[500px] object-cover"
+                                    className="h-fit max-h-[1024px] w-fit max-w-[1024px] object-cover"
                                 />
                             </Link>
                         </li>

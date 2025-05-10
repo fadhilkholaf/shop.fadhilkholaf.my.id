@@ -4,7 +4,7 @@ import Form from "next/form";
 
 import { useSession } from "next-auth/react";
 import { createPaypalOrder } from "@/actions/paypal";
-import { getGithubUser } from "@/actions/github";
+import { getGithubUser } from "@/actions/octokit";
 
 export default function ClientPage() {
     const { data: session, update } = useSession();
