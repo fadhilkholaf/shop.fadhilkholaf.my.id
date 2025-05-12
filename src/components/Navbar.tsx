@@ -10,7 +10,8 @@ export default async function Navbar() {
     const session = await auth();
 
     return (
-        <nav className="fixed top-0 left-0">
+        <nav className="layout fixed top-0 left-1/2 -translate-x-1/2">
+            <h4 className="font-mono">Shop.</h4>
             <ul className="flex gap-2">
                 <li>
                     <Link href="/" className="font-mono">
