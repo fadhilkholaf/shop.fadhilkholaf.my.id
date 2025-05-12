@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-:root {
+@theme {
     --primary: oklch(89.9% 0.061 343.231);
     --secondary: oklch(27.8% 0.033 256.848);
 }
@@ -8,19 +8,15 @@
 @theme inline {
     --color-primary: var(--primary);
     --color-secondary: var(--secondary);
+
+    --font-sans: var(--font-geist);
+    --font-mono: var(--font-geist-mono);
+
+    --breakpoint-xs: 30rem;
 }
 
 @layer base {
-    html {
-        @apply bg-primary text-secondary;
-    }
-
-    a,
-    button {
-        @apply cursor-pointer;
-    }
-
-    input {
-        @apply border px-2 py-1;
+    * {
+        @apply border border-red-500/10;
     }
 }

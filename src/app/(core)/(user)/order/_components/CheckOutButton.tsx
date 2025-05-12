@@ -1,9 +1,10 @@
 "use client";
 
-import { captureOrderAction, createOrderAction } from "@/actions/order";
-import { Prisma } from "@/prisma/generated";
 import { OnApproveData } from "@paypal/paypal-js";
 import { PayPalButtons } from "@paypal/react-paypal-js";
+
+import { captureOrderAction, createOrderAction } from "@/actions/order";
+import { Prisma } from "@/prisma/generated";
 
 export default function CheckOutButton({
     cart,
@@ -37,6 +38,14 @@ export default function CheckOutButton({
             createOrder={createOrder}
             onApprove={onApprove}
             onError={onError}
+            style={{
+                layout: "horizontal",
+                label: "checkout",
+                color: "gold",
+                tagline: false,
+                disableMaxWidth: true,
+                borderRadius: 8,
+            }}
         />
     );
 }

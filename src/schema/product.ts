@@ -14,3 +14,5 @@ export const createProductSchema = z.object({
         ]).has(file.type);
     }, "Invalid image type!"),
 });
+
+export type CreateProductSchema = z.infer<typeof createProductSchema>;

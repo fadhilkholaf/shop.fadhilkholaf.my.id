@@ -43,7 +43,9 @@ export default async function UserPage() {
                                     );
                                 })}
                             </ul>
-                            <CheckOutButton cart={cart} />
+                            <div className="size-fit w-64">
+                                <CheckOutButton cart={cart} />
+                            </div>
                             {/* <Form
                                 action={async function () {
                                     "use server";

@@ -91,11 +91,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         newUser: "/not-found",
         signIn: "/not-found",
         signOut: "/not-found",
-        error: "/error",
-    },
-    theme: {
-        brandColor: "#fccee8",
-        colorScheme: "light",
-        logo: "https://95k1y8fb5v.ufs.sh/f/EyY37ktHRd8rEl1LgntHRd8rjI3XZ1LO2eloC0sGA5tDNJSU",
+        error: "/",
     },
 });

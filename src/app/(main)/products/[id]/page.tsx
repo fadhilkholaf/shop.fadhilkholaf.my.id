@@ -33,7 +33,7 @@ export default async function ProductPage({
 
     return (
         <>
-            <IsCollaborator session={session} product={product} />
+            {/* <IsCollaborator session={session} product={product} /> */}
             <h1>{product.name}</h1>
             <Image
                 src={product.image}

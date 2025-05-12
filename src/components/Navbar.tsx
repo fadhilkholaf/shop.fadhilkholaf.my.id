@@ -13,7 +13,9 @@ export default async function Navbar() {
         <nav className="fixed top-0 left-0">
             <ul className="flex gap-2">
                 <li>
-                    <Link href="/">server</Link>
+                    <Link href="/" className="font-mono">
+                        server
+                    </Link>
                 </li>
                 <li>
                     <Link href="/client">client</Link>
