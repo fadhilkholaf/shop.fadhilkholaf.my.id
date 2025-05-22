@@ -34,6 +34,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             const existingUser = await getUser({
                 githubId: Number(profile!.id),
             });
+
             if (!existingUser) {
                 await createUser({
                     githubId: Number(profile!.id),
@@ -41,6 +42,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     image: user.image!,
                 });
             }
+
             return true;
         },
         async jwt({ token, user, profile, session, trigger }) {

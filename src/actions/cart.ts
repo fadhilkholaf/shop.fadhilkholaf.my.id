@@ -1,8 +1,11 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+
 import { auth } from "@/lib/auth";
 import { Prisma, Product } from "@/prisma/generated";
 import { createCart, getAllCart, updateCart } from "@/query/cart";
+import { responseError, responseSuccess } from "@/utils/response";
 
 export async function addToCartAction(product: Product) {
     try {
@@ -29,10 +32,13 @@ export async function addToCartAction(product: Product) {
         )) as Prisma.CartGetPayload<{ include: { order: true } }>[];
 
         if (!availableCart.length) {
-            const createdCart = await createCart({
-                user: { connect: { githubId: session.user.githubId } },
-                products: { connect: { id: product.id } },
-            });
+            const createdCart = (await createCart(
+                {
+                    user: { connect: { githubId: session.user.githubId } },
+                    products: { connect: { id: product.id } },
+                },
+                { products: true },
+            )) as Prisma.CartGetPayload<{ include: { products: true } }>;
 
             return {
                 success: true,
@@ -41,10 +47,13 @@ export async function addToCartAction(product: Product) {
             };
         }
 
-        const updatedCart = await updateCart(
+        const updatedCart = (await updateCart(
             { id: availableCart[0].id },
             { products: { connect: { id: product.id } } },
-        );
+            { products: true },
+        )) as Prisma.CartGetPayload<{ include: { products: true } }>;
+
+        revalidatePath("/", "layout");
 
         return {
             success: true,
@@ -69,5 +78,23 @@ export async function addToCartAction(product: Product) {
             message: "Unexpected error adding to cart!",
             data: null,
         };
+    }
+}
+
+export async function removeCartItemAction(cartId: number, productId: number) {
+    try {
+        const updatedCart = (await updateCart(
+            { id: cartId },
+            { products: { disconnect: { id: productId } } },
+            { products: true },
+        )) as Prisma.CartGetPayload<{ include: { products: true } }>;
+
+        revalidatePath("/", "layout");
+
+        return responseSuccess("Success removing item!", updatedCart);
+    } catch (error) {
+        console.log(error);
+
+        return responseError("Error removing cart item!", null, error);
     }
 }

@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 
 import { SessionProvider } from "next-auth/react";
 
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/navbar/Navbar";
 import LenisWrapper from "@/components/wrapper/LenisWrapper";
 import PaypalWrapper from "@/components/wrapper/PaypalWrapper";
+import CartModalProvider from "@/context/CartModalContext";
 
 import "./globals.css";
 
@@ -74,15 +76,25 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang="en" className="bg-primary text-secondary">
+            <head>
+                <Script
+                    crossOrigin="anonymous"
+                    src="//unpkg.com/react-scan/dist/auto.global.js"
+                />
+            </head>
             <body
                 className={`${geist.className} ${geistMono.variable} antialiased`}
             >
                 <SessionProvider>
                     <PaypalWrapper>
                         <LenisWrapper>
-                            <Navbar />
-                            {children}
+                            <CartModalProvider>
+                                <header>
+                                    <Navbar />
+                                </header>
+                                {children}
+                            </CartModalProvider>
                         </LenisWrapper>
                     </PaypalWrapper>
                 </SessionProvider>

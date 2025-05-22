@@ -6,8 +6,10 @@
 }
 
 @theme inline {
-    --color-primary: var(--primary);
-    --color-secondary: var(--secondary);
+    --color-primary: var(--color-pink-200);
+    --color-secondary: var(--color-gray-800);
+    --color-error: var(--color-red-800);
+    --color-github: #101411;
 
     --font-sans: var(--font-geist);
     --font-mono: var(--font-geist-mono);
@@ -18,8 +20,22 @@
         /* @apply outline outline-red-500; */
     }
 
+    html {
+        & ::-webkit-scrollbar {
+            @apply bg-primary size-2 p-2;
+        }
+
+        & ::-webkit-scrollbar-track {
+            @apply bg-primary rounded-lg;
+        }
+
+        & ::-webkit-scrollbar-thumb {
+            @apply bg-secondary rounded-lg;
+        }
+    }
+
     body {
-        @apply text-sm font-semibold md:text-base xl:text-lg;
+        @apply text-xs md:text-sm xl:text-base;
     }
 
     h1 {
@@ -38,7 +54,46 @@
         @apply text-lg font-semibold md:text-2xl xl:text-4xl;
     }
 
+    h5 {
+        @apply text-base font-semibold md:text-xl xl:text-3xl;
+    }
+
+    h6 {
+        @apply text-sm font-semibold md:text-lg xl:text-2xl;
+    }
+
+    a,
+    button {
+        @apply cursor-pointer;
+    }
+
     .layout {
         @apply mx-auto w-15/16 max-w-[100rem];
+    }
+}
+
+@layer components {
+    .auth-modal {
+        --y-initial: 100%;
+        --y-animate: 0px;
+
+        @media (width >= 48rem) {
+            --y-initial: 0px;
+            --y-animate: 0px;
+        }
+    }
+
+    .cart-modal {
+        --x-initial: 0px;
+        --x-animate: 0px;
+        --y-initial: 100%;
+        --y-animate: 0px;
+
+        @media (width >= 48rem) {
+            --x-initial: 100%;
+            --x-animate: 0px;
+            --y-initial: 0px;
+            --y-animate: 0px;
+        }
     }
 }

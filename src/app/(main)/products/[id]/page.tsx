@@ -15,6 +15,10 @@ import {
     getIsCollaborator,
 } from "@/actions/octokit";
 import { getAllOrder } from "@/query/order";
+import { getAllCart } from "@/query/cart";
+import AddToCartButton from "./_components/AddToCartButton";
+import { Suspense } from "react";
+import CartButton from "@/components/buttons/CartButton";
 
 export default async function ProductPage({
     params,
@@ -32,7 +36,7 @@ export default async function ProductPage({
     const session = await auth();
 
     return (
-        <>
+        <main className="layout my-32">
             {/* <IsCollaborator session={session} product={product} /> */}
             <h1>{product.name}</h1>
             <Image
@@ -40,44 +44,14 @@ export default async function ProductPage({
                 alt={product.name}
                 width={1024}
                 height={1024}
+                priority
                 className="h-fit w-full object-cover"
             />
-            <Action session={session} product={product} />
-        </>
+            <Suspense fallback={<p>Checking availability!</p>}>
+                <Action session={session} product={product} />
+            </Suspense>
+        </main>
     );
-}
-
-async function IsCollaborator({
-    session,
-    product,
-}: {
-    session: Session | null;
-    product: Product;
-}) {
-    if (!session) {
-        return null;
-    }
-
-    const gitHubRepository = await getGitHubRepositoryById(
-        product.repositoryId,
-    );
-
-    if (!gitHubRepository) {
-        return null;
-    }
-
-    const gitHubUser = await getGitHubUserById(session.user.githubId);
-
-    if (!gitHubUser) {
-        return null;
-    }
-
-    const isCollaborator = await getIsCollaborator(
-        gitHubRepository.name,
-        gitHubUser.login,
-    );
-
-    return <h1>Is Collaborator: {isCollaborator}</h1>;
 }
 
 async function Action({
@@ -159,26 +133,19 @@ async function Action({
         );
     }
 
+    const isOnCart = await getAllCart({
+        user: { githubId: session.user.githubId },
+        order: null,
+        products: { some: { id: product.id } },
+    });
+
     return (
         <>
-            <Form
-                action={async function () {
-                    "use server";
-
-                    const response = await addToCartAction(product);
-
-                    console.log(response);
-                }}
-            >
-                <button type="submit">Add to cart</button>
-            </Form>
-            {/* <Form
-                action={async function () {
-                    "use server";
-                }}
-            >
-                <button type="submit">Buy</button>
-            </Form> */}
+            {!isOnCart.length ? (
+                <AddToCartButton product={product} />
+            ) : (
+                <CartButton>Open cart</CartButton>
+            )}
         </>
     );
 }

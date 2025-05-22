@@ -103,11 +103,11 @@ export async function getIsCollaborator(repo: string, username: string) {
 
         return status;
     } catch (error) {
-        console.log(error);
-
         if (error instanceof RequestError) {
             return null;
         }
+
+        console.log(error);
 
         return null;
     }

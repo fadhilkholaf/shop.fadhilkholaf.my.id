@@ -8,7 +8,7 @@ import { cancelFrame, frame } from "motion";
 export default function LenisWrapper({ children }: { children: ReactNode }) {
     const lenisRef = useRef<LenisRef>(null);
 
-    useEffect(() => {
+    useEffect(function () {
         function update(data: { timestamp: number }) {
             const time = data.timestamp;
             lenisRef.current?.lenis?.raf(time);
@@ -16,7 +16,9 @@ export default function LenisWrapper({ children }: { children: ReactNode }) {
 
         frame.update(update, true);
 
-        return () => cancelFrame(update);
+        return function () {
+            cancelFrame(update);
+        };
     }, []);
 
     return (

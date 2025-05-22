@@ -1,5 +1,6 @@
-import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
+
+import { auth } from "@/lib/auth";
 
 export default auth(async (req) => {
     const { auth, nextUrl, url } = req;

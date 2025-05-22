@@ -4,6 +4,7 @@ import { OnApproveData } from "@paypal/paypal-js";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 
 import { captureOrderAction, createOrderAction } from "@/actions/order";
+import { useCartModal } from "@/context/CartModalContext";
 import { Prisma } from "@/prisma/generated";
 
 export default function CheckOutButton({
@@ -11,8 +12,10 @@ export default function CheckOutButton({
 }: {
     cart: Prisma.CartGetPayload<{ include: { products: true } }>;
 }) {
+    const { setIsOpen, setCartData } = useCartModal();
+
     async function createOrder() {
-        const response = await createOrderAction(cart);
+        const response = await createOrderAction(cart.id);
 
         if (!response.success || !response.data || !response.data.id) {
             throw new Error(response.message);
@@ -22,11 +25,14 @@ export default function CheckOutButton({
     }
 
     async function onApprove(data: OnApproveData) {
-        const capture = await captureOrderAction(data.orderID, cart);
+        const capture = await captureOrderAction(data.orderID, cart.id);
 
         if (!capture.data || !capture.success) {
             throw new Error(capture.message);
         }
+
+        setCartData(null);
+        setIsOpen(false);
     }
 
     function onError(err: Record<string, unknown>) {
