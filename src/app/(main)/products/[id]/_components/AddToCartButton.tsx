@@ -1,9 +1,10 @@
 "use client";
 
+import Form from "next/form";
+
 import { addToCartAction } from "@/actions/cart";
 import { useCartModal } from "@/context/CartModalContext";
-import { Prisma, Product } from "@/prisma/generated";
-import Form from "next/form";
+import { Product } from "@/prisma/generated";
 
 export default function AddToCartButton({ product }: { product: Product }) {
     const { setIsOpen, setCartData } = useCartModal();
@@ -11,17 +12,15 @@ export default function AddToCartButton({ product }: { product: Product }) {
     return (
         <Form
             action={async function () {
-                const response = await addToCartAction(product);
+                const response = await addToCartAction(product.id);
 
-                if (!response.success) {
+                if (response.error) {
+                    alert(response.error);
+
                     return;
                 }
 
-                setCartData(
-                    response.data as Prisma.CartGetPayload<{
-                        include: { products: true };
-                    }>,
-                );
+                setCartData(response.result);
 
                 setIsOpen(true);
             }}

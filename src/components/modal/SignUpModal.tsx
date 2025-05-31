@@ -39,7 +39,7 @@ export default function SignUpModal({
                     exit="initial"
                     variants={modalVariants}
                     className={cn(
-                        "h-screen w-screen",
+                        "h-svh w-screen",
                         "fixed top-0 left-0 z-50",
                         "flex items-end justify-center md:items-center",
                         "backdrop-brightness-50",
@@ -85,8 +85,8 @@ export default function SignUpModal({
                                     pathname,
                                 );
 
-                                if (response && !response.success) {
-                                    setError(response.message);
+                                if (response && !response.error) {
+                                    setError(response.error);
                                 }
                             }}
                             className={cn(

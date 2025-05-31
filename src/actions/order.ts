@@ -8,7 +8,7 @@ import { getCart } from "@/query/cart";
 import { createOrder } from "@/query/order";
 import { getAllProduct } from "@/query/product";
 import {
-    CartWithOrderAndProduct,
+    CartWithOrderProductAndUser,
     OrderWithCartWithProductAndUser,
 } from "@/types/prisma-relations";
 import { ResponseTemplate } from "@/types/response";
@@ -20,22 +20,33 @@ import {
     getGitHubUserById,
 } from "./octokit";
 import { capturePaypalOrder, createPaypalOrder } from "./paypal";
+import { auth } from "@/lib/auth";
 
 export async function createOrderAction(
     cartId: number,
-): Promise<ResponseTemplate<Order | null, unknown | null>> {
+): Promise<ResponseTemplate<Order | null, string | null>> {
     try {
+        const session = await auth();
+
+        if (!session) {
+            return responseError("Unauthenticated!");
+        }
+
         const cart = (await getCart(
             { id: cartId },
-            { order: true, products: true },
-        )) as CartWithOrderAndProduct;
+            { order: true, products: true, user: true },
+        )) as CartWithOrderProductAndUser;
+
+        if (cart.user.githubId !== session.user.githubId) {
+            return responseError("Forbidden!");
+        }
 
         if (cart.order) {
-            return responseError("Cart order already captured!", null, null);
+            return responseError("Cart order already captured");
         }
 
         if (!cart.products.length) {
-            return responseError("At lest one product in a cart!", null, null);
+            return responseError("At lest one product in a cart!");
         }
 
         const existingProducts = await getAllProduct({
@@ -47,26 +58,22 @@ export async function createOrderAction(
         });
 
         if (existingProducts.length !== cart.products.length) {
-            return responseError("Some product in cart not found!", null, null);
+            return responseError("Some product in cart not found!");
         }
 
         const createdPaypalOrder = await createPaypalOrder(existingProducts);
 
         if (!createdPaypalOrder) {
-            return responseError(
-                "Unexpected error creating paypal order!",
-                null,
-                null,
-            );
+            return responseError("Unexpected error creating paypal order!");
         }
 
         revalidatePath("/", "layout");
 
-        return responseSuccess("Order created!", createdPaypalOrder.result);
+        return responseSuccess(createdPaypalOrder.result);
     } catch (error) {
         console.log(error);
 
-        return responseError("Unexpected error creating order!", null, error);
+        return responseError("Unexpected error creating order!");
     }
 }
 
@@ -74,18 +81,18 @@ export async function captureOrderAction(
     id: string,
     cartId: number,
 ): Promise<
-    ResponseTemplate<OrderWithCartWithProductAndUser | null, unknown | null>
+    ResponseTemplate<OrderWithCartWithProductAndUser | null, string | null>
 > {
     try {
         const capturedPaypalOrder = await capturePaypalOrder(id);
 
-        if (!capturedPaypalOrder.success || !capturedPaypalOrder.data) {
-            return responseError(capturedPaypalOrder.message, null, null);
+        if (capturedPaypalOrder.error) {
+            return responseError(capturedPaypalOrder.error);
         }
 
         const createdOrder = (await createOrder(
             {
-                orderId: capturedPaypalOrder.data.result.id || id,
+                orderId: capturedPaypalOrder.result?.id || id,
                 cart: { connect: { id: cartId } },
             },
             { cart: { include: { user: true, products: true } } },
@@ -98,7 +105,9 @@ export async function captureOrderAction(
                 );
 
                 if (!gitHubRepository) {
-                    return;
+                    throw new Error(
+                        `GitHub repository with id ${product.repositoryId} not found!`,
+                    );
                 }
 
                 const gitHubUser = await getGitHubUserById(
@@ -106,7 +115,7 @@ export async function captureOrderAction(
                 );
 
                 if (!gitHubUser) {
-                    return;
+                    throw new Error(`GitHub user not found!`);
                 }
 
                 await addRepositoryCollaborator(
@@ -118,14 +127,10 @@ export async function captureOrderAction(
 
         revalidatePath("/", "layout");
 
-        return responseSuccess("Check out order success!", createdOrder);
+        return responseSuccess(createdOrder);
     } catch (error) {
         console.log(error);
 
-        return responseError(
-            "Unexpected error checking out order!",
-            null,
-            error,
-        );
+        return responseError("Unexpected error checking out order!");
     }
 }

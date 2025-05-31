@@ -10,7 +10,6 @@ import { AnimatePresence, motion } from "motion/react";
 import { removeCartItemAction } from "@/actions/cart";
 import CheckOutButton from "@/components/buttons/CheckOutButton";
 import { useCartModal } from "@/context/CartModalContext";
-import { Prisma } from "@/prisma/generated";
 import { cn } from "@/utils/cn";
 import { modalVariants } from "@/utils/motion-variants";
 
@@ -64,7 +63,7 @@ export default function CartModal() {
                                 exit="initial"
                                 variants={modalVariants}
                                 className={cn(
-                                    "size-full",
+                                    "h-lvh w-screen",
                                     "fixed top-0 left-0 z-50",
                                     "flex items-end justify-end",
                                     "backdrop-brightness-50",
@@ -100,7 +99,12 @@ export default function CartModal() {
                                     )}
                                 >
                                     <header className="flex items-center justify-between">
-                                        <h6 className="font-mono">Cart.</h6>
+                                        <div className="flex flex-col">
+                                            <h6>Cart.</h6>
+                                            {cartData && (
+                                                <p>ID: {cartData.publicId}</p>
+                                            )}
+                                        </div>
                                         <button
                                             type="button"
                                             onClick={function () {
@@ -116,10 +120,7 @@ export default function CartModal() {
                                                 cartData.products.map(
                                                     function (product, i) {
                                                         return (
-                                                            <li
-                                                                key={i}
-                                                                className="h-[50vh]"
-                                                            >
+                                                            <li key={i}>
                                                                 <Image
                                                                     src={
                                                                         product.image
@@ -148,17 +149,16 @@ export default function CartModal() {
                                                                             );
 
                                                                         if (
-                                                                            !response.success
+                                                                            response.error
                                                                         ) {
+                                                                            alert(
+                                                                                response.error,
+                                                                            );
                                                                             return;
                                                                         }
 
                                                                         setCartData(
-                                                                            response.data as Prisma.CartGetPayload<{
-                                                                                include: {
-                                                                                    products: true;
-                                                                                };
-                                                                            }>,
+                                                                            response.result,
                                                                         );
                                                                     }}
                                                                 >

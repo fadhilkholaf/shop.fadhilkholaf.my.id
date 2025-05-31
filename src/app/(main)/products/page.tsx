@@ -9,7 +9,7 @@ export default async function ProductsPage() {
     return (
         <main className="layout mt-32">
             <h1>Products Page</h1>
-            <ul className="grid grid-cols-3 gap-x-4">
+            <ul className="grid grid-cols-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3">
                 {products.map(function (product, i) {
                     return (
                         <li key={i} className="w-full">

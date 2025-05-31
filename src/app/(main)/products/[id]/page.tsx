@@ -7,7 +7,6 @@ import { auth, signIn } from "@/lib/auth";
 import { Session } from "next-auth";
 import { revalidatePath } from "next/cache";
 import { Product } from "@/prisma/generated";
-import { addToCartAction } from "@/actions/cart";
 import {
     addRepositoryCollaborator,
     getGitHubRepositoryById,
@@ -45,9 +44,16 @@ export default async function ProductPage({
                 width={1024}
                 height={1024}
                 priority
-                className="h-fit w-full object-cover"
+                className="aspect-video h-fit w-full object-cover"
             />
-            <Suspense fallback={<p>Checking availability!</p>}>
+            <Suspense
+                fallback={
+                    <p>
+                        Checking availability!{" "}
+                        <span className="inline-block animate-spin">|</span>
+                    </p>
+                }
+            >
                 <Action session={session} product={product} />
             </Suspense>
         </main>

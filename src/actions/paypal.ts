@@ -3,11 +3,14 @@
 import {
     CheckoutPaymentIntent,
     ItemCategory,
+    Order,
     PaypalWalletContextShippingPreference,
 } from "@paypal/paypal-server-sdk";
 
 import { paypalOrder } from "@/lib/paypal";
 import { Product } from "@/prisma/generated";
+import { ResponseTemplate } from "@/types/response";
+import { responseError, responseSuccess } from "@/utils/response";
 
 export async function createPaypalOrder(products: Product[]) {
     try {
@@ -83,30 +86,20 @@ export async function createPaypalOrder(products: Product[]) {
     }
 }
 
-export async function capturePaypalOrder(id: string) {
+export async function capturePaypalOrder(
+    id: string,
+): Promise<ResponseTemplate<Order | null, string | null>> {
     try {
         const response = await paypalOrder.captureOrder({ id });
 
         if (response.statusCode >= 400) {
-            return {
-                success: false,
-                message: "Error capturing order!",
-                data: null,
-            };
+            return responseError("Error capturing order!");
         }
 
-        return {
-            success: true,
-            message: "Capture order success!",
-            data: response,
-        };
+        return responseSuccess(response.result);
     } catch (error) {
         console.error(error);
 
-        return {
-            success: false,
-            message: "Unexpected error capturing order!",
-            data: null,
-        };
+        return responseError("Unexpected error capturing order!");
     }
 }

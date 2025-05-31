@@ -17,18 +17,18 @@ export default function CheckOutButton({
     async function createOrder() {
         const response = await createOrderAction(cart.id);
 
-        if (!response.success || !response.data || !response.data.id) {
-            throw new Error(response.message);
+        if (response.error) {
+            throw new Error(response.error);
         }
 
-        return response.data.id;
+        return response.result?.id || "";
     }
 
     async function onApprove(data: OnApproveData) {
         const capture = await captureOrderAction(data.orderID, cart.id);
 
-        if (!capture.data || !capture.success) {
-            throw new Error(capture.message);
+        if (capture.error) {
+            throw new Error(capture.error);
         }
 
         setCartData(null);
