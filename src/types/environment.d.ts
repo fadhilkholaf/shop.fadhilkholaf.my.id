@@ -1,6 +1,6 @@
 namespace NodeJS {
     interface ProcessEnv {
-        NODE_ENV: string;
+        APP_ENVIRONMENT: string;
         DATABASE_URL: string;
         AUTH_SECRET: string;
         AUTH_GITHUB_ID: string;
