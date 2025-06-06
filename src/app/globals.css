@@ -11,6 +11,8 @@
     --color-error: var(--color-red-800);
     --color-github: #101411;
 
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
     --font-sans: var(--font-geist);
     --font-mono: var(--font-geist-mono);
 }
@@ -36,6 +38,10 @@
 
     body {
         @apply text-xs md:text-sm xl:text-base;
+
+        & ::selection {
+            @apply bg-secondary text-primary;
+        }
     }
 
     h1 {
