@@ -1,73 +1,105 @@
 "use server";
 
-import { orders } from "@paypal/checkout-server-sdk";
+import {
+    CheckoutPaymentIntent,
+    ItemCategory,
+    Order,
+    PaypalWalletContextShippingPreference,
+} from "@paypal/paypal-server-sdk";
 
-import { paypalClient } from "@/lib/paypal";
+import { paypalOrder } from "@/lib/paypal";
+import { Product } from "@/prisma/generated";
+import { ResponseTemplate } from "@/types/response";
+import { responseError, responseSuccess } from "@/utils/response";
 
-export async function createPaypalOrder() {
+export async function createPaypalOrder(products: Product[]) {
     try {
-        //This code is lifted from https://github.com/paypal/Checkout-NodeJS-SDK
-        const request = new orders.OrdersCreateRequest();
-        request.headers["Prefer"] = "return=representation";
-        request.requestBody({
-            intent: "CAPTURE",
-            purchase_units: [
-                {
-                    amount: {
-                        currency_code: "USD",
-                        value: "1",
+        const totalPrice = products.reduce(function (acc, product) {
+            return acc + product.price;
+        }, 0);
+        const factor = Math.pow(10, 2);
+        const totalTax = Math.round(totalPrice * 0.12 * factor) / factor;
+
+        const response = await paypalOrder.createOrder({
+            body: {
+                intent: CheckoutPaymentIntent.Capture,
+                paymentSource: {
+                    paypal: {
+                        experienceContext: {
+                            shippingPreference:
+                                PaypalWalletContextShippingPreference.NoShipping,
+                        },
                     },
                 },
-            ],
+                purchaseUnits: [
+                    {
+                        amount: {
+                            currencyCode: "USD",
+                            value: (totalPrice + totalTax).toString(),
+                            breakdown: {
+                                itemTotal: {
+                                    currencyCode: "USD",
+                                    value: totalPrice.toString(),
+                                },
+                                taxTotal: {
+                                    currencyCode: "USD",
+                                    value: totalTax.toString(),
+                                },
+                            },
+                        },
+                        items: products.map(function (product) {
+                            const price = product.price;
+                            const tax =
+                                Math.round(product.price * 0.12 * factor) /
+                                factor;
+
+                            return {
+                                name: product.name,
+                                category: ItemCategory.DigitalGoods,
+                                quantity: "1",
+                                unitAmount: {
+                                    currencyCode: "USD",
+                                    value: price.toString(),
+                                },
+                                tax: {
+                                    currencyCode: "USD",
+                                    value: tax.toString(),
+                                },
+                                imageUrl: product.image,
+                                url: `https://shop.fadhilkholaf.my.id/products/${product.publicId}`,
+                            };
+                        }),
+                    },
+                ],
+            },
         });
-        const response = await paypalClient().execute(request);
+
+        if (response.statusCode >= 400) {
+            return null;
+        }
+
         return response;
+    } catch (error) {
+        console.error(error);
 
-        // if (response.statusCode !== 201) {
-        //   console.log("RES: ", response)
-        //   return res.status(500).json({success: false, message: "Some Error Occured at backend"})
-        // }
-
-        // ...
-
-        // Your Custom Code for doing something with order
-        // Usually Store an order in the database like MongoDB
-
-        // ...
-
-        // res.status(200).json({success: true, data: {order}})
-    } catch (err) {
-        console.log("Err at Create Order: ", err);
-        // return res
-        //     .status(500)
-        //     .json({ success: false, message: "Could Not Found the user" });
+        return null;
     }
 }
 
-export async function capturePaypalOrder(id: string) {
-    //Capture order to complete payment
-    // const { orderID } = req.body;
-    const request = new orders.OrdersCaptureRequest(id);
-    request.requestBody({
-        payment_source: {
-            token: { id, type: "BILLING_AGREEMENT" },
-        },
-    });
-    const response = await paypalClient().execute(request);
-    return response;
-    // return response.result.id;
+export async function capturePaypalOrder(
+    id: string,
+): Promise<ResponseTemplate<Order | null, string | null>> {
+    try {
+        const response = await paypalOrder.captureOrder({ id });
 
-    //   if (!response) {
-    //     return res.status(500).json({success: false, message: "Some Error Occured at backend"})
-    //   }
+        if (response.statusCode >= 400) {
+            return responseError("Error capturing order!");
+        }
 
-    //   ...
+        return responseSuccess(response.result);
+    } catch (error) {
+        console.error(error);
 
-    // Your Custom Code to Update Order Status
-    // And Other stuff that is related to that order, like wallet
-    // Here I am updateing the wallet and sending it back to frontend to update it on frontend
-
-    //   ...
-
-    //   res.status(200).json({success: true, data: {wallet}})
+        return responseError("Unexpected error capturing order!");
+    }
 }

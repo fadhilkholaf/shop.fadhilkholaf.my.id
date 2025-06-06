@@ -1,12 +1,18 @@
-import { core } from "@paypal/checkout-server-sdk";
+import {
+    Client,
+    Environment,
+    OrdersController,
+} from "@paypal/paypal-server-sdk";
 
-function paypalEnvironment() {
-    return new core.SandboxEnvironment(
-        process.env.PAYPAL_CLIENT_ID,
-        process.env.PAYPAL_CLIENT_SECRET,
-    );
-}
+const paypalClient = new Client({
+    clientCredentialsAuthCredentials: {
+        oAuthClientId: process.env.PAYPAL_CLIENT_ID,
+        oAuthClientSecret: process.env.PAYPAL_CLIENT_SECRET,
+    },
+    environment:
+        process.env.APP_ENVIRONMENT === "production"
+            ? Environment.Production
+            : Environment.Sandbox,
+});
 
-export function paypalClient() {
-    return new core.PayPalHttpClient(paypalEnvironment());
-}
+export const paypalOrder = new OrdersController(paypalClient);
