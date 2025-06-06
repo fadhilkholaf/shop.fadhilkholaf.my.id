@@ -43,6 +43,7 @@ export default function SignInModal({
                         "fixed top-0 left-0 z-50",
                         "flex items-end justify-center md:items-center",
                         "backdrop-brightness-50",
+                        "ease-out-expo transition-[height] duration-200",
                     )}
                 >
                     <motion.div

@@ -36,7 +36,7 @@ export default function CheckOutButton({
     }
 
     function onError(err: Record<string, unknown>) {
-        console.log({ err, message: err.message });
+        console.error({ err, message: err.message });
     }
 
     return (
