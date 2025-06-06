@@ -71,7 +71,7 @@ export async function createOrderAction(
 
         return responseSuccess(createdPaypalOrder.result);
     } catch (error) {
-        console.log(error);
+        console.error(error);
 
         return responseError("Unexpected error creating order!");
     }
@@ -129,7 +129,7 @@ export async function captureOrderAction(
 
         return responseSuccess(createdOrder);
     } catch (error) {
-        console.log(error);
+        console.error(error);
 
         return responseError("Unexpected error checking out order!");
     }

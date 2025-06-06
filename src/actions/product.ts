@@ -76,7 +76,7 @@ export async function createProductAction(formData: FormData) {
             data: createdProduct,
         };
     } catch (error) {
-        console.log(error);
+        console.error(error);
 
         await deleteImage("product", publicId);
 

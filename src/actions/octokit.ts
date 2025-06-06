@@ -14,7 +14,7 @@ async function getGitHubAuthenticatedUser() {
 
         return data;
     } catch (error) {
-        console.log(error);
+        console.error(error);
 
         return null;
     }
@@ -31,7 +31,7 @@ export async function getGitHubUserById(account_id: number) {
 
         return data;
     } catch (error) {
-        console.log(error);
+        console.error(error);
 
         return null;
     }
@@ -55,7 +55,7 @@ export async function getGitHubRepository(repo: string) {
 
         return data;
     } catch (error) {
-        console.log(error);
+        console.error(error);
 
         return null;
     }
@@ -75,7 +75,7 @@ export async function getGitHubRepositoryById(repository_id: number) {
 
         return data;
     } catch (error) {
-        console.log(error);
+        console.error(error);
 
         return null;
     }
@@ -107,7 +107,7 @@ export async function getIsCollaborator(repo: string, username: string) {
             return null;
         }
 
-        console.log(error);
+        console.error(error);
 
         return null;
     }
@@ -139,7 +139,7 @@ export async function addRepositoryCollaborator(
 
         return data;
     } catch (error) {
-        console.log(error);
+        console.error(error);
 
         return null;
     }

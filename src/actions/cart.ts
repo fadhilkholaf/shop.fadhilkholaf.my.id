@@ -59,7 +59,7 @@ export async function addToCartAction(
 
         return responseSuccess(updatedCart);
     } catch (error) {
-        console.log(error);
+        console.error(error);
 
         return responseError("Unexpected error adding cart item!");
     }
@@ -80,7 +80,7 @@ export async function removeCartItemAction(
 
         return responseSuccess(updatedCart);
     } catch (error) {
-        console.log(error);
+        console.error(error);
 
         return responseError("Unexpected error removing cart item!");
     }

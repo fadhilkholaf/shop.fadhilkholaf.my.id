@@ -40,7 +40,7 @@ export async function uploadImage(
 
         return response;
     } catch (error) {
-        console.log(error);
+        console.error(error);
 
         return null;
     }
@@ -52,7 +52,7 @@ export const deleteImage = async (type: UploadImageType, fileName: string) => {
 
         return { success: true, message: "Image deleted!", data: null };
     } catch (error) {
-        console.log(error);
+        console.error(error);
 
         return {
             success: false,
