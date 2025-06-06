@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
             { hostname: "avatars.githubusercontent.com" },
             { hostname: "res.cloudinary.com" },
         ],
+        unoptimized: true,
     },
 };
 
