@@ -3,63 +3,18 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 
 import { SessionProvider } from "next-auth/react";
+// import { Toaster } from "sonner";
 
+import Footer from "@/components/Footer";
 import Navbar from "@/components/navbar/Navbar";
+import CartModalProviderWrapper from "@/components/wrapper/CartModalProviderWrapper";
 import LenisWrapper from "@/components/wrapper/LenisWrapper";
 import PaypalWrapper from "@/components/wrapper/PaypalWrapper";
-import CartModalProvider from "@/context/CartModalContext";
+import { rootMetadata } from "@/data/metadata";
 
 import "./globals.css";
 
-export const metadata: Metadata = {
-    metadataBase: new URL("/", "https://shop.fadhilkholaf.my.id"),
-    title: {
-        default: "Home | Fadhil Kholaf Shop",
-        template: "%s | Fadhil Kholaf Shop",
-    },
-
-    description: "I sell access to my private repo here!",
-    authors: [
-        {
-            name: "Muhammad Fadhil Kholaf",
-            url: "https://fadhilkholaf.my.id",
-        },
-    ],
-    generator: "Next.js",
-    keywords:
-        "Fadhil Kholaf Shop, Fadhil, Kholaf, Shop, Fadhil Kholaf Private GitHub Repository Access, Private, GitHub, Repository, Access",
-    referrer: "origin",
-    creator: "Muhammad Fadhil Kholaf",
-    publisher: "Vercel",
-    robots: {
-        index: true,
-        follow: true,
-        googleBot: {
-            index: true,
-            follow: true,
-            "max-video-preview": -1,
-            "max-image-preview": "large",
-            "max-snippet": -1,
-        },
-    },
-    alternates: { canonical: "./" },
-    openGraph: {
-        siteName: "Fadhil Kholaf Shop",
-        url: "https://shop.fadhilkholaf.my.id",
-        images: [
-            {
-                url: "https://fadhilkholaf.my.id/api/og?title=Shop.&name=My Private Repo Access",
-                width: 800,
-                height: 418,
-            },
-        ],
-    },
-    twitter: {
-        card: "summary_large_image",
-        creator: "@fadhilkholaf",
-        images: "https://fadhilkholaf.my.id/api/og?name=Shop.&title=My Private Repo Access",
-    },
-};
+export const metadata: Metadata = rootMetadata;
 
 const geist = Geist({
     subsets: ["latin"],
@@ -89,12 +44,18 @@ export default function RootLayout({
                 <SessionProvider>
                     <PaypalWrapper>
                         <LenisWrapper>
-                            <CartModalProvider>
-                                <header>
-                                    <Navbar />
-                                </header>
+                            <CartModalProviderWrapper>
+                                <Navbar />
+                                {/* <Toaster
+                                    duration={5000}
+                                    position="bottom-center"
+                                    style={{
+                                        fontFamily: "var(--font-geist)",
+                                    }}
+                                /> */}
                                 {children}
-                            </CartModalProvider>
+                                <Footer />
+                            </CartModalProviderWrapper>
                         </LenisWrapper>
                     </PaypalWrapper>
                 </SessionProvider>
