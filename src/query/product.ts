@@ -14,6 +14,15 @@ export async function getProduct(where: Prisma.ProductWhereUniqueInput) {
     return await prisma.product.findUnique({ where });
 }
 
-export async function getAllProduct(where?: Prisma.ProductWhereInput) {
-    return await prisma.product.findMany({ where });
+export async function getAllProduct(
+    where?: Prisma.ProductWhereInput,
+    skip?: number,
+    take?: number,
+    orderBy?: Prisma.ProductOrderByWithRelationInput,
+) {
+    return await prisma.product.findMany({ where, skip, take, orderBy });
+}
+
+export async function getAllProductLength() {
+    return await prisma.product.count();
 }
