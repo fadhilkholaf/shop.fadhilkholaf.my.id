@@ -7,6 +7,7 @@ import SignOutButton from "@/components/buttons/SignOutButton";
 
 import AuthModalButton from "./parts/auth/AuthModalButton";
 import { cn } from "@/utils/cn";
+import AdminMenuModal from "../modal/AdminMenuModal";
 
 const items = [{ title: "Products", href: "/products" }];
 
@@ -15,6 +16,7 @@ export default async function Navbar() {
 
     return (
         <header
+            id="rootHeader"
             className={cn(
                 "fixed",
                 "w-full",
@@ -45,7 +47,7 @@ export default async function Navbar() {
                         {!session && <AuthModalButton />}
                         {session && session.user.role === "admin" && (
                             <li>
-                                <Link href="/admin">Admin</Link>
+                                <AdminMenuModal />
                             </li>
                         )}
                         {session && <SignOutButton />}

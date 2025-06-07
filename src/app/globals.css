@@ -102,4 +102,11 @@
             --y-animate: 0px;
         }
     }
+
+    .admin-menu-modal {
+        --y-initial: 25px;
+        --y-animate: 0px;
+        --rz-initial: 3deg;
+        --rz-animate: 0deg;
+    }
 }
