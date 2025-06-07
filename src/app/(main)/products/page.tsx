@@ -43,7 +43,7 @@ export default async function ProductsPage({
     return (
         <main className="layout mt-32 flex flex-col gap-y-16">
             <header>
-                <h1>Products Page</h1>
+                <h1>The Products</h1>
             </header>
             <main>
                 <ul className="grid grid-cols-1 gap-x-8 gap-y-16 lg:grid-cols-3">

@@ -7,7 +7,7 @@ export default async function LatestProducts({ products }: { products: P[] }) {
     return (
         <section className="flex flex-col gap-y-16">
             <header>
-                <h1>More Latest Products</h1>
+                <h1>Latest Products</h1>
             </header>
             <main>
                 <ul className="grid grid-cols-1 gap-8 md:grid-cols-3">
