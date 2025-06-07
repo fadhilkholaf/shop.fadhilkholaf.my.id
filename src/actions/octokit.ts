@@ -1,8 +1,11 @@
 "use server";
 
-import { octokit } from "@/lib/octokit";
-import { GitHubRepository } from "@/types/octokit";
 import { RequestError } from "octokit";
+
+import { octokit } from "@/lib/octokit";
+import { GitHubAddCollaborator, GitHubRepository } from "@/types/octokit";
+import { ResponseTemplate } from "@/types/response";
+import { responseError, responseSuccess } from "@/utils/response";
 
 async function getGitHubAuthenticatedUser() {
     try {
@@ -116,12 +119,14 @@ export async function getIsCollaborator(repo: string, username: string) {
 export async function addRepositoryCollaborator(
     repo: string,
     username: string,
-) {
+): Promise<
+    ResponseTemplate<GitHubAddCollaborator["data"] | null, string | null>
+> {
     try {
         const gitHubAuthenticatedUser = await getGitHubAuthenticatedUser();
 
         if (!gitHubAuthenticatedUser) {
-            return null;
+            return responseError("Unauthenticated!");
         }
 
         const { data } = await octokit.request(
@@ -137,10 +142,10 @@ export async function addRepositoryCollaborator(
             },
         );
 
-        return data;
+        return responseSuccess(data);
     } catch (error) {
         console.error(error);
 
-        return null;
+        return responseError("Unexpected error sending invitation!");
     }
 }
