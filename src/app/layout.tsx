@@ -3,13 +3,13 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 
 import { SessionProvider } from "next-auth/react";
-// import { Toaster } from "sonner";
 
 import Footer from "@/components/Footer";
 import Navbar from "@/components/navbar/Navbar";
 import CartModalProviderWrapper from "@/components/wrapper/CartModalProviderWrapper";
 import LenisWrapper from "@/components/wrapper/LenisWrapper";
 import PaypalWrapper from "@/components/wrapper/PaypalWrapper";
+import SignInModalProvider from "@/context/SignInModalContext";
 import { rootMetadata } from "@/data/metadata";
 
 import "./globals.css";
@@ -44,18 +44,13 @@ export default function RootLayout({
                 <SessionProvider>
                     <PaypalWrapper>
                         <LenisWrapper>
-                            <CartModalProviderWrapper>
-                                <Navbar />
-                                {/* <Toaster
-                                    duration={5000}
-                                    position="bottom-center"
-                                    style={{
-                                        fontFamily: "var(--font-geist)",
-                                    }}
-                                /> */}
-                                {children}
-                                <Footer />
-                            </CartModalProviderWrapper>
+                            <SignInModalProvider>
+                                <CartModalProviderWrapper>
+                                    <Navbar />
+                                    {children}
+                                    <Footer />
+                                </CartModalProviderWrapper>
+                            </SignInModalProvider>
                         </LenisWrapper>
                     </PaypalWrapper>
                 </SessionProvider>
