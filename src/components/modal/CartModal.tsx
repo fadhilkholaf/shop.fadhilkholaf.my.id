@@ -2,7 +2,7 @@
 
 import Form from "next/form";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 
 import { AnimatePresence, motion } from "motion/react";
@@ -17,12 +17,6 @@ export default function CartModal() {
     const { isOpen, setIsOpen, cartData, setCartData } = useCartModal();
 
     const cartModalRef = useRef<HTMLDivElement>(null);
-
-    const [isMounted, setIsMounted] = useState<boolean>(false);
-
-    useEffect(function () {
-        setIsMounted(true);
-    }, []);
 
     useEffect(
         function () {
@@ -53,7 +47,7 @@ export default function CartModal() {
 
     return (
         <>
-            {isMounted &&
+            {typeof window !== "undefined" &&
                 createPortal(
                     <AnimatePresence mode="wait">
                         {isOpen && (
@@ -63,7 +57,7 @@ export default function CartModal() {
                                 exit="initial"
                                 variants={modalVariants}
                                 className={cn(
-                                    "h-lvh w-screen",
+                                    "h-dvh w-screen",
                                     "fixed top-0 left-0 z-50",
                                     "flex items-end justify-end",
                                     "backdrop-brightness-50",

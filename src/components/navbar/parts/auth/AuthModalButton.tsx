@@ -12,11 +12,6 @@ export default function ModalButton() {
 
     const [signUp, setSignUp] = useState<boolean>(false);
     const [signIn, setSignIn] = useState<boolean>(false);
-    const [isMounted, setIsMounted] = useState<boolean>(false);
-
-    useEffect(function () {
-        setIsMounted(true);
-    }, []);
 
     useEffect(
         function () {
@@ -82,7 +77,7 @@ export default function ModalButton() {
                     Sign Up
                 </button>
             </li>
-            {isMounted &&
+            {typeof window !== "undefined" &&
                 createPortal(
                     <>
                         <SignUpModal
