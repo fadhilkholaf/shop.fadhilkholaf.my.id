@@ -4,9 +4,9 @@ import { auth } from "@/lib/auth";
 
 import CartButton from "@/components/buttons/CartButton";
 import SignOutButton from "@/components/buttons/SignOutButton";
-
-import AuthModalButton from "./parts/auth/AuthModalButton";
 import { cn } from "@/utils/cn";
+
+import SignInButton from "../buttons/SignInButton";
 import AdminMenuModal from "../modal/AdminMenuModal";
 
 const items = [{ title: "Products", href: "/products" }];
@@ -44,13 +44,23 @@ export default async function Navbar() {
                 </main>
                 <footer>
                     <ul className="flex size-full items-center gap-x-4 font-semibold">
-                        {!session && <AuthModalButton />}
+                        {!session && (
+                            <li>
+                                <SignInButton>
+                                    <p className="text-nowrap">Sign In</p>
+                                </SignInButton>
+                            </li>
+                        )}
                         {session && session.user.role === "admin" && (
                             <li>
                                 <AdminMenuModal />
                             </li>
                         )}
-                        {session && <SignOutButton />}
+                        {session && (
+                            <li>
+                                <SignOutButton />
+                            </li>
+                        )}
                     </ul>
                 </footer>
             </nav>

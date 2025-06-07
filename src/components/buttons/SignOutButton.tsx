@@ -12,18 +12,16 @@ export default function SignOutButton() {
     const { setCartData } = useCartModal();
 
     return (
-        <li>
-            <Form
-                action={async function () {
-                    setCartData(null);
+        <Form
+            action={async function () {
+                setCartData(null);
 
-                    await signOutAction(pathname);
-                }}
-            >
-                <button type="submit" className="text-nowrap">
-                    Sign Out
-                </button>
-            </Form>
-        </li>
+                await signOutAction(pathname);
+            }}
+        >
+            <button type="submit" className="text-nowrap">
+                Sign Out
+            </button>
+        </Form>
     );
 }

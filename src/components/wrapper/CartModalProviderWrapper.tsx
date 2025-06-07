@@ -12,18 +12,14 @@ export default async function CartModalProviderWrapper({
 }) {
     const session = await auth();
 
-    let carts: CartWithProduct[] = [];
-
-    if (session) {
-        carts = (await getAllCart(
-            { user: { githubId: session.user.githubId }, order: null },
-            { products: true },
-        )) as CartWithProduct[];
+    if (!session) {
+        return children;
     }
 
-    return (
-        <CartModalProvider cart={carts[0]} session={session}>
-            {children}
-        </CartModalProvider>
-    );
+    const carts: CartWithProduct[] = (await getAllCart(
+        { user: { githubId: session.user.githubId }, order: null },
+        { products: true },
+    )) as CartWithProduct[];
+
+    return <CartModalProvider cart={carts[0]}>{children}</CartModalProvider>;
 }

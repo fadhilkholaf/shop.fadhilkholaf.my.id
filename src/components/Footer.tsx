@@ -23,7 +23,7 @@ export default function Footer() {
         >
             <header>
                 <h6>shop.</h6>
-                <p>The template for all you need.</p>
+                <p>The code.</p>
             </header>
             <main className="w-full">
                 <ul className="grid grid-cols-1 gap-x-8 gap-y-4 sm:grid-cols-2 md:grid-cols-3">

@@ -12,7 +12,6 @@ import {
 import { Prisma } from "@/prisma/generated";
 import CartModal from "@/components/modal/CartModal";
 import { CartWithProduct } from "@/types/prisma-relations";
-import { Session } from "next-auth";
 
 const CartModalContext = createContext<
     | {
@@ -33,11 +32,9 @@ const CartModalContext = createContext<
 export default function CartModalProvider({
     children,
     cart,
-    session,
 }: {
     children: ReactNode;
     cart: CartWithProduct | null;
-    session: Session | null;
 }) {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [cartData, setCartData] = useState<Prisma.CartGetPayload<{
@@ -48,7 +45,7 @@ export default function CartModalProvider({
         <CartModalContext.Provider
             value={{ isOpen, setIsOpen, cartData, setCartData }}
         >
-            {session && <CartModal />}
+            <CartModal />
             {children}
         </CartModalContext.Provider>
     );
