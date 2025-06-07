@@ -12,7 +12,7 @@ export default async function MainPage() {
     });
 
     return (
-        <main className="layout mt-32 flex min-h-screen flex-col gap-y-32">
+        <main className="layout mt-32 flex flex-col gap-y-32">
             <MainPageHero product={products[0]} />
             <LatestProducts products={products.slice(1)} />
             <Features />

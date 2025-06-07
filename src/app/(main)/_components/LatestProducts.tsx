@@ -10,7 +10,7 @@ export default async function LatestProducts({ products }: { products: P[] }) {
                 <h1>More Latest Products</h1>
             </header>
             <main>
-                <ul className="grid grid-cols-1 gap-x-8 gap-y-16 md:grid-cols-3">
+                <ul className="grid grid-cols-1 gap-8 md:grid-cols-3">
                     {products.map(function (product, i) {
                         return (
                             <li key={i}>

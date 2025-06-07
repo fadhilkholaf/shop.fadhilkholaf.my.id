@@ -5,7 +5,7 @@ export default function Testimonials() {
                 <h1>What Are They Say</h1>
             </header>
             <main>
-                <ul className="grid grid-cols-1 md:grid-cols-3">
+                <ul className="grid grid-cols-1 gap-8 md:grid-cols-3">
                     <li>
                         <article>
                             <header>
