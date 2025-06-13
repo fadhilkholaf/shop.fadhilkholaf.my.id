@@ -33,9 +33,9 @@ export default function ProductDetailsPageHero({
                     <h3>{product.name}</h3>
                 </header>
                 <main>
-                    <h6 className="font-mono font-normal">
+                    <h4 className="font-mono font-normal">
                         {formatUsd(product.price)}
-                    </h6>
+                    </h4>
                 </main>
                 <footer>
                     <Suspense
