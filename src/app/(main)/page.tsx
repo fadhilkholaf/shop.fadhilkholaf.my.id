@@ -12,9 +12,9 @@ export default async function MainPage() {
     });
 
     return (
-        <main className="layout mt-32 flex flex-col gap-y-32">
+        <main className="layout mt-16 flex flex-col gap-y-16 md:gap-y-32">
             <MainPageHero product={products[0]} />
-            <LatestProducts products={products} />
+            <LatestProducts products={products.slice(1)} />
             <Features />
             <Testimonials />
             <FAQ />

@@ -9,7 +9,7 @@ export default function Testimonials() {
                     <li>
                         <article>
                             <header>
-                                <h5>Fadhil, The Creator</h5>
+                                <h4>Fadhil, The Creator</h4>
                             </header>
                             <main>
                                 <p>This is suck bro 🥀🙏🏿❌😭</p>
@@ -19,7 +19,7 @@ export default function Testimonials() {
                     <li>
                         <article>
                             <header>
-                                <h5>Tester</h5>
+                                <h4>Tester</h4>
                             </header>
                             <main>
                                 <p>
@@ -32,7 +32,7 @@ export default function Testimonials() {
                     <li>
                         <article>
                             <header>
-                                <h5>That Guy</h5>
+                                <h4>That Guy</h4>
                             </header>
                             <main>
                                 <p>Nice thing</p>

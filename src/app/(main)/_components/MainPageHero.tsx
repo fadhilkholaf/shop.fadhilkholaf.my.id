@@ -7,17 +7,17 @@ import { formatDate } from "@/utils/format";
 export default function MainPageHero({ product }: { product: P | null }) {
     return (
         <section className="flex flex-col gap-y-8">
-            <header className="flex flex-col items-center gap-y-2">
+            <header className="flex flex-col items-center">
                 <h1 className="text-5xl md:text-7xl xl:text-9xl">
-                    I Sell Code 🧑🏿‍🔬
+                    I Sell Code 👩🏿‍💻
                 </h1>
                 {product ? (
                     <p>
                         Latest product: {product.name} -{" "}
-                        {formatDate(product.createdAt)}
+                        {formatDate(product.createdAt)} 📅
                     </p>
                 ) : (
-                    <p>Coming Soon!</p>
+                    <p>Coming Soon 👷🏿!</p>
                 )}
             </header>
             {product && (

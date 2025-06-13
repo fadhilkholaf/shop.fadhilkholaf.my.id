@@ -1,5 +1,6 @@
-import { cn } from "@/utils/cn";
 import Link from "next/link";
+
+import { cn } from "@/utils/cn";
 
 const links: { href: string; title: string }[][] = [
     [
@@ -22,7 +23,7 @@ export default function Footer() {
             className={cn("layout", "py-2", "my-32", "flex flex-col gap-y-8")}
         >
             <header>
-                <h6>shop.</h6>
+                <h4>shop.</h4>
                 <p>The code.</p>
             </header>
             <main className="w-full">

@@ -40,7 +40,7 @@ export default function FAQ() {
                                             }}
                                             className="w-full"
                                         >
-                                            <h5 className="flex justify-between">
+                                            <h4 className="flex justify-between">
                                                 <span>{qna.q}</span>
                                                 <span
                                                     className={cn(
@@ -53,7 +53,7 @@ export default function FAQ() {
                                                 >
                                                     👉🏿
                                                 </span>
-                                            </h5>
+                                            </h4>
                                         </button>
                                     </header>
                                     <AnimatePresence>

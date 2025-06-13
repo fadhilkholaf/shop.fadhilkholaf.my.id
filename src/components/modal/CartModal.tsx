@@ -94,7 +94,7 @@ export default function CartModal() {
                                 >
                                     <header className="flex items-center justify-between">
                                         <div className="flex flex-col">
-                                            <h6>Cart.</h6>
+                                            <h4>Cart.</h4>
                                             {cartData && (
                                                 <p>ID: {cartData.publicId}</p>
                                             )}
