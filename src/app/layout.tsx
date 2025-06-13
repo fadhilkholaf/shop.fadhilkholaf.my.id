@@ -5,7 +5,7 @@ import Script from "next/script";
 import { SessionProvider } from "next-auth/react";
 
 import Footer from "@/components/Footer";
-import Navbar from "@/components/navbar/Navbar";
+import Navbar from "@/components/Navbar";
 import CartModalProviderWrapper from "@/components/wrapper/CartModalProviderWrapper";
 import LenisWrapper from "@/components/wrapper/LenisWrapper";
 import PaypalWrapper from "@/components/wrapper/PaypalWrapper";

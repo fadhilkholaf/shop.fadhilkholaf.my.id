@@ -6,8 +6,8 @@ import CartButton from "@/components/buttons/CartButton";
 import SignOutButton from "@/components/buttons/SignOutButton";
 import { cn } from "@/utils/cn";
 
-import SignInButton from "../buttons/SignInButton";
-import AdminMenuModal from "../modal/AdminMenuModal";
+import SignInButton from "./buttons/SignInButton";
+import AdminMenuModal from "./modal/AdminMenuModal";
 
 const items = [{ title: "Products", href: "/products" }];
 
@@ -27,7 +27,7 @@ export default async function Navbar() {
             <nav className={cn("layout", "py-2", "flex gap-x-8 md:gap-x-16")}>
                 <header>
                     <Link href="/">
-                        <h6>Shop.</h6>
+                        <h4>Shop.</h4>
                     </Link>
                 </header>
                 <main className="w-full">
