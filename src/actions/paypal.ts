@@ -35,7 +35,7 @@ export async function createPaypalOrder(products: Product[]) {
                     {
                         amount: {
                             currencyCode: "USD",
-                            value: (totalPrice + totalTax).toString(),
+                            value: (totalPrice + totalTax).toFixed(2),
                             breakdown: {
                                 itemTotal: {
                                     currencyCode: "USD",

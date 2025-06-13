@@ -11,8 +11,7 @@ import { Product } from "@/prisma/generated";
 import { getAllOrder } from "@/query/order";
 import { getAllCart } from "@/query/cart";
 
-import AddToCartButton from "./AddToCartButton";
-import RequestInvitationButton from "./RequestInvitationButton";
+import { AddToCartButton, RequestInvitationButton } from "./ActionButton";
 
 export default async function ActionWrapper({
     session,
@@ -23,7 +22,7 @@ export default async function ActionWrapper({
 }) {
     if (!session) {
         return (
-            <SignInButton>
+            <SignInButton className="w-full">
                 <p className="bg-secondary text-primary w-full rounded-lg p-4 text-center">
                     Sign in
                 </p>
@@ -39,7 +38,7 @@ export default async function ActionWrapper({
 
     if (isOnCart.length) {
         return (
-            <CartButton>
+            <CartButton className="w-full">
                 <p className="bg-secondary text-primary w-full rounded-lg p-4 text-center">
                     Check out
                 </p>
@@ -68,9 +67,13 @@ export default async function ActionWrapper({
 
     if (isCollaborator) {
         return (
-            <p className="bg-secondary text-primary w-full rounded-lg p-4 text-center">
+            <a
+                href={gitHubRepository.html_url}
+                target="_blank"
+                className="bg-secondary text-primary inline-block w-full rounded-lg p-4 text-center"
+            >
                 Already a collaborator
-            </p>
+            </a>
         );
     }
 

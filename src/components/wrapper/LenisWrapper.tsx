@@ -5,8 +5,12 @@ import { ReactNode, useEffect, useRef } from "react";
 import { LenisRef, ReactLenis } from "lenis/react";
 import { cancelFrame, frame } from "motion";
 
+import { useCartModal } from "@/context/CartModalContext";
+
 export default function LenisWrapper({ children }: { children: ReactNode }) {
     const lenisRef = useRef<LenisRef>(null);
+
+    const { isOpen } = useCartModal();
 
     useEffect(function () {
         function update(data: { timestamp: number }) {
@@ -22,7 +26,7 @@ export default function LenisWrapper({ children }: { children: ReactNode }) {
     }, []);
 
     return (
-        <ReactLenis root options={{ autoRaf: false }} ref={lenisRef}>
+        <ReactLenis root={!isOpen} options={{ autoRaf: false }} ref={lenisRef}>
             {children}
         </ReactLenis>
     );

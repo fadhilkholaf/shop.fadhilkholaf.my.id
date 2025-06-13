@@ -1,20 +1,19 @@
 "use client";
 
-import Form from "next/form";
-import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 
 import { AnimatePresence, motion } from "motion/react";
 
-import { removeCartItemAction } from "@/actions/cart";
 import CheckOutButton from "@/components/buttons/CheckOutButton";
+import CartItem from "@/components/CartItem";
 import { useCartModal } from "@/context/CartModalContext";
 import { cn } from "@/utils/cn";
+import { formatUsd } from "@/utils/format";
 import { modalVariants } from "@/utils/motion-variants";
 
 export default function CartModal() {
-    const { isOpen, setIsOpen, cartData, setCartData } = useCartModal();
+    const { isOpen, setIsOpen, cartData: cart } = useCartModal();
 
     const cartModalRef = useRef<HTMLDivElement>(null);
 
@@ -94,10 +93,8 @@ export default function CartModal() {
                                 >
                                     <header className="flex items-center justify-between">
                                         <div className="flex flex-col">
-                                            <h4>Cart.</h4>
-                                            {cartData && (
-                                                <p>ID: {cartData.publicId}</p>
-                                            )}
+                                            <h4>Cart 🛒</h4>
+                                            {cart && <p>ID: {cart.publicId}</p>}
                                         </div>
                                         <button
                                             type="button"
@@ -108,72 +105,44 @@ export default function CartModal() {
                                             Close
                                         </button>
                                     </header>
-                                    <main className="h-full overflow-y-auto pr-4">
-                                        <ul>
-                                            {cartData &&
-                                                cartData.products.map(
+                                    <main className="h-full overflow-y-scroll pr-4">
+                                        <ul className="flex flex-col gap-y-8">
+                                            {cart &&
+                                                cart.products.map(
                                                     function (product, i) {
                                                         return (
                                                             <li key={i}>
-                                                                <Image
-                                                                    src={
-                                                                        product.image
+                                                                <CartItem
+                                                                    product={
+                                                                        product
                                                                     }
-                                                                    alt={
-                                                                        product.name
-                                                                    }
-                                                                    width={1024}
-                                                                    height={
-                                                                        1024
-                                                                    }
-                                                                    priority
-                                                                    className="aspect-video h-32 w-fit rounded-lg object-cover"
                                                                 />
-                                                                <h1>
-                                                                    {
-                                                                        product.name
-                                                                    }
-                                                                </h1>
-                                                                <Form
-                                                                    action={async function () {
-                                                                        const response =
-                                                                            await removeCartItemAction(
-                                                                                cartData.id,
-                                                                                product.id,
-                                                                            );
-
-                                                                        if (
-                                                                            response.error
-                                                                        ) {
-                                                                            alert(
-                                                                                response.error,
-                                                                            );
-                                                                            return;
-                                                                        }
-
-                                                                        setCartData(
-                                                                            response.result,
-                                                                        );
-                                                                    }}
-                                                                >
-                                                                    <button type="submit">
-                                                                        Remove
-                                                                    </button>
-                                                                </Form>
                                                             </li>
                                                         );
                                                     },
                                                 )}
                                         </ul>
                                     </main>
-                                    <footer>
-                                        {cartData &&
-                                            !!cartData.products.length && (
-                                                <CheckOutButton
-                                                    cart={cartData}
-                                                />
-                                            )}
-                                    </footer>
+                                    {cart && !!cart.products.length && (
+                                        <footer className="flex flex-col gap-y-4">
+                                            <h3 className="flex justify-between font-mono">
+                                                <span>Total + VAT:</span>
+                                                <span>
+                                                    {formatUsd(
+                                                        cart.products.reduce(
+                                                            function (a, b) {
+                                                                return (
+                                                                    a + b.price
+                                                                );
+                                                            },
+                                                            0,
+                                                        ) * 1.12,
+                                                    )}
+                                                </span>
+                                            </h3>
+                                            <CheckOutButton cart={cart} />
+                                        </footer>
+                                    )}
                                 </motion.div>
                             </motion.section>
                         )}

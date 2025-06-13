@@ -1,10 +1,15 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ComponentPropsWithoutRef, ReactNode } from "react";
 
 import { useCartModal } from "@/context/CartModalContext";
 
-export default function CartButton({ children }: { children: ReactNode }) {
+export default function CartButton({
+    children,
+    ...props
+}: {
+    children: ReactNode;
+} & Omit<ComponentPropsWithoutRef<"button">, "type" | "onClick">) {
     const { setIsOpen } = useCartModal();
 
     return (
@@ -13,6 +18,7 @@ export default function CartButton({ children }: { children: ReactNode }) {
             onClick={function () {
                 setIsOpen(true);
             }}
+            {...props}
         >
             {children}
         </button>

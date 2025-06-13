@@ -6,6 +6,7 @@ import {
     ReactNode,
     SetStateAction,
     useContext,
+    useEffect,
     useState,
 } from "react";
 
@@ -40,6 +41,22 @@ export default function CartModalProvider({
     const [cartData, setCartData] = useState<Prisma.CartGetPayload<{
         include: { products: true };
     }> | null>(cart);
+
+    useEffect(
+        function () {
+            if (isOpen) {
+                document.documentElement.classList.add("overflow-hidden");
+            } else {
+                document.documentElement.classList.remove("overflow-hidden");
+            }
+
+            return function () {
+                document.documentElement.classList.remove("overflow-hidden");
+            };
+        },
+
+        [isOpen],
+    );
 
     return (
         <CartModalContext.Provider

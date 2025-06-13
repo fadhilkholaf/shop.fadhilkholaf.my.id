@@ -13,7 +13,7 @@ export default async function CartModalProviderWrapper({
     const session = await auth();
 
     if (!session) {
-        return children;
+        return <CartModalProvider cart={null}>{children}</CartModalProvider>;
     }
 
     const carts: CartWithProduct[] = (await getAllCart(

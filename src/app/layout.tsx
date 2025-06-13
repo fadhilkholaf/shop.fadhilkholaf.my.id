@@ -43,15 +43,15 @@ export default function RootLayout({
             >
                 <SessionProvider>
                     <PaypalWrapper>
-                        <LenisWrapper>
-                            <SignInModalProvider>
-                                <CartModalProviderWrapper>
+                        <SignInModalProvider>
+                            <CartModalProviderWrapper>
+                                <LenisWrapper>
                                     <Navbar />
                                     {children}
                                     <Footer />
-                                </CartModalProviderWrapper>
-                            </SignInModalProvider>
-                        </LenisWrapper>
+                                </LenisWrapper>
+                            </CartModalProviderWrapper>
+                        </SignInModalProvider>
                     </PaypalWrapper>
                 </SessionProvider>
             </body>

@@ -17,7 +17,7 @@ export default function ProductDetailsPageHero({
 }) {
     return (
         <section className="grid grid-cols-1 gap-8 md:grid-cols-2">
-            <header>
+            <header className="bg-secondary rounded-2xl p-2 md:rounded-3xl md:p-4">
                 <Image
                     src={product.image}
                     alt={product.name}
@@ -27,15 +27,13 @@ export default function ProductDetailsPageHero({
                     className="aspect-video w-full rounded-lg object-cover"
                 />
             </header>
-            <main className="flex flex-col gap-y-8">
+            <main className="flex flex-col gap-y-4">
                 <header>
                     <p>{formatDate(product.createdAt)}</p>
-                    <h3>{product.name}</h3>
+                    <h1>{product.name}</h1>
                 </header>
                 <main>
-                    <h4 className="font-mono font-normal">
-                        {formatUsd(product.price)}
-                    </h4>
+                    <p className="font-mono">{formatUsd(product.price)}</p>
                 </main>
                 <footer>
                     <Suspense

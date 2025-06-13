@@ -64,13 +64,13 @@
     button {
         @apply cursor-pointer;
     }
-
-    .layout {
-        @apply mx-auto w-15/16 max-w-[100rem];
-    }
 }
 
 @layer components {
+    .layout {
+        @apply mx-auto w-15/16 max-w-[100rem];
+    }
+
     .auth-modal {
         --y-initial: 100%;
         --y-animate: 0px;

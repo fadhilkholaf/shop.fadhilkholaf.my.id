@@ -8,11 +8,11 @@ export default function MainPageHero({ product }: { product: P | null }) {
     return (
         <section className="flex flex-col gap-y-8">
             <header className="flex flex-col items-center">
-                <h1 className="text-5xl md:text-7xl xl:text-9xl">
+                <h1 className="text-4xl md:text-6xl xl:text-8xl">
                     I Sell Code 👩🏿‍💻
                 </h1>
                 {product ? (
-                    <p>
+                    <p className="text-center">
                         Latest product: {product.name} -{" "}
                         {formatDate(product.createdAt)} 📅
                     </p>
