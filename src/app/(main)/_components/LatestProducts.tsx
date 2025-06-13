@@ -5,12 +5,15 @@ import { Product as P } from "@/prisma/generated";
 
 export default async function LatestProducts({ products }: { products: P[] }) {
     return (
-        <section className="flex flex-col gap-y-16">
-            <header>
-                <h1>More Latest Products</h1>
+        <section className="flex flex-col gap-y-8 md:gap-y-16">
+            <header className="flex flex-col items-center">
+                <h1 className="text-center text-4xl md:text-6xl xl:text-8xl">
+                    More Products 📑
+                </h1>
+                <p>The repositories</p>
             </header>
             <main>
-                <ul className="grid grid-cols-1 gap-x-8 gap-y-16 md:grid-cols-3">
+                <ul className="grid grid-cols-1 gap-8 md:grid-cols-2">
                     {products.map(function (product, i) {
                         return (
                             <li key={i}>
@@ -27,7 +30,7 @@ export default async function LatestProducts({ products }: { products: P[] }) {
             </main>
             <footer className="flex justify-center">
                 <Link href="/products">
-                    <h5 className="w-fit">View All Products →</h5>
+                    <h4 className="w-fit">View All Products →</h4>
                 </Link>
             </footer>
         </section>

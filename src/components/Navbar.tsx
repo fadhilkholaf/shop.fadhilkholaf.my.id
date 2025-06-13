@@ -4,9 +4,10 @@ import { auth } from "@/lib/auth";
 
 import CartButton from "@/components/buttons/CartButton";
 import SignOutButton from "@/components/buttons/SignOutButton";
-
-import AuthModalButton from "./parts/auth/AuthModalButton";
 import { cn } from "@/utils/cn";
+
+import SignInButton from "./buttons/SignInButton";
+import AdminMenuModal from "./modal/AdminMenuModal";
 
 const items = [{ title: "Products", href: "/products" }];
 
@@ -15,6 +16,7 @@ export default async function Navbar() {
 
     return (
         <header
+            id="rootHeader"
             className={cn(
                 "fixed",
                 "w-full",
@@ -25,7 +27,7 @@ export default async function Navbar() {
             <nav className={cn("layout", "py-2", "flex gap-x-8 md:gap-x-16")}>
                 <header>
                     <Link href="/">
-                        <h6>Shop.</h6>
+                        <h4>Shop.</h4>
                     </Link>
                 </header>
                 <main className="w-full">
@@ -42,13 +44,23 @@ export default async function Navbar() {
                 </main>
                 <footer>
                     <ul className="flex size-full items-center gap-x-4 font-semibold">
-                        {!session && <AuthModalButton />}
-                        {session && session.user.role === "admin" && (
+                        {!session && (
                             <li>
-                                <Link href="/admin">Admin</Link>
+                                <SignInButton>
+                                    <p className="text-nowrap">Sign In</p>
+                                </SignInButton>
                             </li>
                         )}
-                        {session && <SignOutButton />}
+                        {session && session.user.role === "admin" && (
+                            <li>
+                                <AdminMenuModal />
+                            </li>
+                        )}
+                        {session && (
+                            <li>
+                                <SignOutButton />
+                            </li>
+                        )}
                     </ul>
                 </footer>
             </nav>

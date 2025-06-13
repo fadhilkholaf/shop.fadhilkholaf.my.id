@@ -1,44 +1,43 @@
+const testimonials: { title: string; desc: string }[] = [
+    {
+        title: "Fadhil, The Creator",
+        desc: "This is suck bro. 🥀🙏🏿❌😭",
+    },
+    {
+        title: "Tester",
+        desc: "God will help you gang keep it going. 🌺🌷💮💐",
+    },
+    {
+        title: "That Guy",
+        desc: "Nice thing.",
+    },
+];
+
 export default function Testimonials() {
     return (
-        <section className="flex flex-col gap-y-16">
-            <header>
-                <h1>What Are They Say</h1>
+        <section className="flex flex-col gap-y-8 md:gap-y-16">
+            <header className="flex flex-col items-center">
+                <h1 className="text-center text-4xl md:text-6xl xl:text-8xl">
+                    They Say 🥷🏿
+                </h1>
+                <p>{`It's actually good`}</p>
             </header>
             <main>
-                <ul className="grid grid-cols-1 md:grid-cols-3">
-                    <li>
-                        <article>
-                            <header>
-                                <h5>Fadhil, The Creator</h5>
-                            </header>
-                            <main>
-                                <p>This is suck bro 🥀🙏🏿❌😭</p>
-                            </main>
-                        </article>
-                    </li>
-                    <li>
-                        <article>
-                            <header>
-                                <h5>Tester</h5>
-                            </header>
-                            <main>
-                                <p>
-                                    God will help you gang keep it going
-                                    🌺🌷💮💐
-                                </p>
-                            </main>
-                        </article>
-                    </li>
-                    <li>
-                        <article>
-                            <header>
-                                <h5>That Guy</h5>
-                            </header>
-                            <main>
-                                <p>Nice thing</p>
-                            </main>
-                        </article>
-                    </li>
+                <ul className="grid grid-cols-1 gap-8 md:grid-cols-3">
+                    {testimonials.map(function (testimoni, i) {
+                        return (
+                            <li key={i}>
+                                <article>
+                                    <header>
+                                        <h1>{testimoni.title}</h1>
+                                    </header>
+                                    <main>
+                                        <p>{testimoni.desc}</p>
+                                    </main>
+                                </article>
+                            </li>
+                        );
+                    })}
                 </ul>
             </main>
             <footer></footer>

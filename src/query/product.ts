@@ -26,3 +26,10 @@ export async function getAllProduct(
 export async function getAllProductLength() {
     return await prisma.product.count();
 }
+
+export async function getSoldProduct() {
+    return await prisma.product.findMany({
+        where: { carts: { none: { order: null } } },
+        include: { _count: true },
+    });
+}

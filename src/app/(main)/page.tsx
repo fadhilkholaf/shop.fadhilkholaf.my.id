@@ -7,12 +7,12 @@ import MainPageHero from "./_components/MainPageHero";
 import Testimonials from "./_components/Testimonials";
 
 export default async function MainPage() {
-    const products = await getAllProduct(undefined, undefined, 4, {
+    const products = await getAllProduct(undefined, undefined, 3, {
         createdAt: "desc",
     });
 
     return (
-        <main className="layout mt-32 flex min-h-screen flex-col gap-y-32">
+        <main className="layout mt-16 flex flex-col gap-y-16 md:gap-y-32">
             <MainPageHero product={products[0]} />
             <LatestProducts products={products.slice(1)} />
             <Features />

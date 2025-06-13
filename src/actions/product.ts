@@ -1,5 +1,7 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+
 import { auth } from "@/lib/auth";
 import { Prisma } from "@/prisma/generated";
 import { createProduct } from "@/query/product";
@@ -64,11 +66,14 @@ export async function createProductAction(formData: FormData) {
         const createdProduct = await createProduct({
             publicId,
             name: parsedFormData.data.name || parsedFormData.data.repo,
+            category: parsedFormData.data.category,
             price: parsedFormData.data.price,
             image: uploadedImage.secure_url,
             repositoryId: existingRepository.id,
             user: { connect: { githubId: session.user.githubId } },
         });
+
+        revalidatePath("/", "layout");
 
         return {
             success: true,

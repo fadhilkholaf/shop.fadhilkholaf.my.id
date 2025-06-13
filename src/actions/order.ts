@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 
 import { Order } from "@paypal/paypal-server-sdk";
 
+import { auth } from "@/lib/auth";
 import { getCart } from "@/query/cart";
 import { createOrder } from "@/query/order";
 import { getAllProduct } from "@/query/product";
@@ -20,7 +21,6 @@ import {
     getGitHubUserById,
 } from "./octokit";
 import { capturePaypalOrder, createPaypalOrder } from "./paypal";
-import { auth } from "@/lib/auth";
 
 export async function createOrderAction(
     cartId: number,

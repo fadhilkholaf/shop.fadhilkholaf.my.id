@@ -90,6 +90,11 @@ export default function ProductModal() {
                                 return <li key={i}>{error}</li>;
                             },
                         )}
+                        {state.error?.fieldErrors.category?.map(
+                            function (error, i) {
+                                return <li key={i}>{error}</li>;
+                            },
+                        )}
                         {state.error?.fieldErrors.price?.map(
                             function (error, i) {
                                 return <li key={i}>{error}</li>;
@@ -131,6 +136,19 @@ export default function ProductModal() {
                                     defaultValue={
                                         (state.data?.get("name") as string) ||
                                         undefined
+                                    }
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="category">Category</label>
+                                <input
+                                    type="text"
+                                    name="category"
+                                    id="category"
+                                    defaultValue={
+                                        (state.data?.get(
+                                            "category",
+                                        ) as string) || undefined
                                     }
                                 />
                             </div>

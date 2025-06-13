@@ -3,32 +3,53 @@
 import Form from "next/form";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { RefObject, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { AnimatePresence, motion } from "motion/react";
 
 import { signInAction } from "@/actions/auth";
+import Terms from "@/components/misc/Terms";
+import { useSignInModal } from "@/context/SignInModalContext";
 import { cn } from "@/utils/cn";
 import { authModalFormVariants, modalVariants } from "@/utils/motion-variants";
 
 import GitHubLogo from "@/public/images/logo/GitHub_Lockup_Light.svg";
 
-import Terms from "@/components/misc/Terms";
-
-export default function SignInModal({
-    signInModalRef,
-    isOpen,
-    closeModal,
-    swicthModal,
-}: {
-    signInModalRef: RefObject<HTMLDivElement | null>;
-    isOpen: boolean;
-    closeModal: () => void;
-    swicthModal: () => void;
-}) {
+export default function NewSignInModal() {
     const pathname = usePathname();
 
+    const signInModalRef = useRef<HTMLDivElement>(null);
+
     const [error, setError] = useState<string>("");
+
+    const { isOpen, setIsOpen } = useSignInModal();
+
+    useEffect(
+        function () {
+            const signInModalElement = signInModalRef.current;
+
+            function handleClick(e: MouseEvent) {
+                const target = e.target as Node;
+
+                if (
+                    isOpen &&
+                    signInModalElement &&
+                    !signInModalElement.contains(target)
+                ) {
+                    setIsOpen(false);
+                }
+            }
+
+            window.addEventListener("click", handleClick, { capture: true });
+
+            return function () {
+                window.removeEventListener("click", handleClick, {
+                    capture: true,
+                });
+            };
+        },
+        [isOpen, setIsOpen],
+    );
 
     return (
         <AnimatePresence mode="wait">
@@ -66,18 +87,6 @@ export default function SignInModal({
                             <header>
                                 <h3 className="font-mono">Shop.</h3>
                             </header>
-                            <footer>
-                                <p>
-                                    {`Don't have an account? `}
-                                    <button
-                                        type="button"
-                                        className="font-semibold"
-                                        onClick={swicthModal}
-                                    >
-                                        Sign Up
-                                    </button>
-                                </p>
-                            </footer>
                         </div>
                         <Form
                             action={async function (formData) {
@@ -121,7 +130,11 @@ export default function SignInModal({
                                 <div>
                                     <p className="text-error">{error}</p>
                                 </div>
-                                <Terms closeModal={closeModal} />
+                                <Terms
+                                    closeModal={function () {
+                                        setIsOpen(false);
+                                    }}
+                                />
                             </footer>
                         </Form>
                     </motion.div>

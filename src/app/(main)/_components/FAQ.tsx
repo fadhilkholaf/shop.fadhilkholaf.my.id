@@ -20,9 +20,12 @@ export default function FAQ() {
     const [openIndex, setOpenIndex] = useState<number | null>(null);
 
     return (
-        <section className="flex flex-col gap-y-16">
-            <header>
-                <h1>Frequently Asked Question</h1>
+        <section className="flex flex-col gap-y-8 md:gap-y-16">
+            <header className="flex flex-col items-center">
+                <h1 className="text-center text-4xl md:text-6xl xl:text-8xl">
+                    FAQ 🙋🏿‍♂️
+                </h1>
+                <p>{`Is it simple? 🤔`}</p>
             </header>
             <main>
                 <ul className="flex flex-col gap-y-8">
@@ -40,7 +43,7 @@ export default function FAQ() {
                                             }}
                                             className="w-full"
                                         >
-                                            <h5 className="flex justify-between">
+                                            <h1 className="flex justify-between">
                                                 <span>{qna.q}</span>
                                                 <span
                                                     className={cn(
@@ -53,7 +56,7 @@ export default function FAQ() {
                                                 >
                                                     👉🏿
                                                 </span>
-                                            </h5>
+                                            </h1>
                                         </button>
                                     </header>
                                     <AnimatePresence>
