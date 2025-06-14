@@ -25,7 +25,7 @@ export async function createProductAction(formData: FormData) {
             };
         }
 
-        const parsedFormData = createProductSchema.safeParse(
+        const parsedFormData = await createProductSchema.safeParseAsync(
             Object.fromEntries(formData),
         );
 
@@ -67,6 +67,7 @@ export async function createProductAction(formData: FormData) {
             publicId,
             name: parsedFormData.data.name || parsedFormData.data.repo,
             category: parsedFormData.data.category,
+            description: parsedFormData.data.description,
             price: parsedFormData.data.price,
             image: uploadedImage.secure_url,
             repositoryId: existingRepository.id,

@@ -17,8 +17,6 @@ export async function createPaypalOrder(products: Product[]) {
         const totalPrice = products.reduce(function (acc, product) {
             return acc + product.price;
         }, 0);
-        const factor = Math.pow(10, 2);
-        const totalTax = Math.round(totalPrice * 0.12 * factor) / factor;
 
         const response = await paypalOrder.createOrder({
             body: {
@@ -35,35 +33,30 @@ export async function createPaypalOrder(products: Product[]) {
                     {
                         amount: {
                             currencyCode: "USD",
-                            value: (totalPrice + totalTax).toFixed(2),
+                            value: (totalPrice * 1.12).toFixed(2),
                             breakdown: {
                                 itemTotal: {
                                     currencyCode: "USD",
-                                    value: totalPrice.toString(),
+                                    value: totalPrice.toFixed(2),
                                 },
                                 taxTotal: {
                                     currencyCode: "USD",
-                                    value: totalTax.toString(),
+                                    value: (totalPrice * 0.12).toFixed(2),
                                 },
                             },
                         },
                         items: products.map(function (product) {
-                            const price = product.price;
-                            const tax =
-                                Math.round(product.price * 0.12 * factor) /
-                                factor;
-
                             return {
                                 name: product.name,
                                 category: ItemCategory.DigitalGoods,
                                 quantity: "1",
                                 unitAmount: {
                                     currencyCode: "USD",
-                                    value: price.toString(),
+                                    value: product.price.toFixed(2),
                                 },
                                 tax: {
                                     currencyCode: "USD",
-                                    value: tax.toString(),
+                                    value: (product.price * 0.12).toFixed(2),
                                 },
                                 imageUrl: product.image,
                                 url: `https://shop.fadhilkholaf.my.id/products/${product.publicId}`,

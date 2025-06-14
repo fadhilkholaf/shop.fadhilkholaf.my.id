@@ -13,9 +13,9 @@ import { formatUsd } from "@/utils/format";
 import { modalVariants } from "@/utils/motion-variants";
 
 export default function CartModal() {
-    const { isOpen, setIsOpen, cartData: cart } = useCartModal();
-
     const cartModalRef = useRef<HTMLDivElement>(null);
+
+    const { isOpen, setIsOpen, cartData: cart } = useCartModal();
 
     useEffect(
         function () {

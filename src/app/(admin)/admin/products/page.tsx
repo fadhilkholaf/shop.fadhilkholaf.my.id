@@ -1,12 +1,13 @@
 import { getAllProduct } from "@/query/product";
-import ProductModal from "./_components/ProductModal";
+
+import ProductsAdminPageHero from "./_components/ProductsAdminPageHero";
 
 export default async function ProductsPage() {
     const products = await getAllProduct();
 
     return (
-        <main className="layout mt-32 flex flex-col gap-y-32">
-            <ProductModal />
+        <main className="layout mt-16 flex flex-col gap-y-16 md:gap-y-32">
+            <ProductsAdminPageHero />
             <ul>
                 {products.map(function (product, i) {
                     return <li key={i}>{product.name}</li>;

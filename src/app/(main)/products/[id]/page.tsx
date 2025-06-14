@@ -3,9 +3,9 @@ import { notFound } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { getProduct } from "@/query/product";
 
-import ProductDetailsPageHero from "./_components/ProductDetailsPageHero";
+import Hero from "./_components/ProductDetailsPageHero";
 
-export default async function ProductPage({
+export default async function ProductDetailsPage({
     params,
 }: {
     params: Promise<{ id: string }>;
@@ -21,8 +21,8 @@ export default async function ProductPage({
     const session = await auth();
 
     return (
-        <main className="layout mt-32 flex flex-col gap-y-32">
-            <ProductDetailsPageHero session={session} product={product} />
+        <main className="layout mt-16 flex flex-col gap-y-16 md:gap-y-32">
+            <Hero session={session} product={product} />
         </main>
     );
 }

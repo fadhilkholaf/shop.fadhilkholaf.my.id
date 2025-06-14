@@ -1,7 +1,9 @@
 import Image from "next/image";
-import { Suspense } from "react";
+import Link from "next/link";
+import { ComponentPropsWithoutRef, Suspense } from "react";
 
 import { Session } from "next-auth";
+import Markdown from "react-markdown";
 
 import { Product } from "@/prisma/generated";
 import { formatDate, formatUsd } from "@/utils/format";
@@ -38,7 +40,7 @@ export default function ProductDetailsPageHero({
                 <footer>
                     <Suspense
                         fallback={
-                            <p className="bg-secondary text-primary w-full rounded-lg p-4 text-center">
+                            <p className="bg-secondary text-primary w-full cursor-wait rounded-lg p-4 text-center">
                                 Checking availability
                             </p>
                         }
@@ -47,6 +49,36 @@ export default function ProductDetailsPageHero({
                     </Suspense>
                 </footer>
             </main>
+            <footer className="col-span-2">
+                <Markdown
+                    components={{
+                        a: CustomA,
+                    }}
+                >
+                    {product.description}
+                </Markdown>
+            </footer>
         </section>
+    );
+}
+
+function CustomA({ href, ...props }: ComponentPropsWithoutRef<"a">) {
+    if (href?.startsWith("/")) {
+        return (
+            <Link
+                href={href}
+                className="underline underline-offset-2"
+                {...props}
+            />
+        );
+    }
+
+    return (
+        <a
+            href={href}
+            target="_blank"
+            className="underline underline-offset-2"
+            {...props}
+        />
     );
 }

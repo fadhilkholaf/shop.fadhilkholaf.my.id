@@ -6,7 +6,7 @@ import { formatUsd } from "@/utils/format";
 export default function Product({ product }: { product: P }) {
     return (
         <article className="flex h-full flex-col gap-y-2 md:gap-y-4">
-            <header className="bg-secondary md;rounded-3xl flex flex-col gap-y-2 rounded-2xl p-2 md:p-4">
+            <header className="bg-secondary flex flex-col gap-y-2 rounded-2xl p-2 md:rounded-3xl md:p-4">
                 <Image
                     src={product.image}
                     alt={product.name}
