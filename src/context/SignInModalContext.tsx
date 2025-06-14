@@ -6,6 +6,7 @@ import {
     ReactNode,
     SetStateAction,
     useContext,
+    useEffect,
     useState,
 } from "react";
 
@@ -25,6 +26,21 @@ export default function SignInModalProvider({
     children: ReactNode;
 }) {
     const [isOpen, setIsOpen] = useState<boolean>(false);
+
+    useEffect(
+        function () {
+            if (isOpen) {
+                document.body.setAttribute("data-lenis-prevent", "true");
+            } else {
+                document.body.removeAttribute("data-lenis-prevent");
+            }
+
+            return function () {
+                document.body.removeAttribute("data-lenis-prevent");
+            };
+        },
+        [isOpen],
+    );
 
     return (
         <SignInModalContext.Provider value={{ isOpen, setIsOpen }}>

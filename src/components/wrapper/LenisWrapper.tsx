@@ -1,32 +1,40 @@
 "use client";
 
-import { ReactNode, useEffect, useRef } from "react";
+import { type ReactNode, useEffect, useRef } from "react";
 
-import { LenisRef, ReactLenis } from "lenis/react";
-import { cancelFrame, frame } from "motion";
-
-import { useCartModal } from "@/context/CartModalContext";
+import { type LenisRef, ReactLenis } from "lenis/react";
+import { type FrameData, cancelFrame, frame } from "motion";
 
 export default function LenisWrapper({ children }: { children: ReactNode }) {
     const lenisRef = useRef<LenisRef>(null);
 
-    const { isOpen } = useCartModal();
-
     useEffect(function () {
-        function update(data: { timestamp: number }) {
-            const time = data.timestamp;
-            lenisRef.current?.lenis?.raf(time);
+        function update(data: FrameData) {
+            lenisRef.current?.lenis?.raf(data.timestamp);
         }
 
         frame.update(update, true);
 
+        const observer = new MutationObserver(function () {
+            document.documentElement.classList.toggle(
+                "overflow-hidden",
+                document.body.dataset.lenisPrevent === "true",
+            );
+        });
+
+        observer.observe(document.body, {
+            // attributes: true,
+            attributeFilter: ["data-lenis-prevent"],
+        });
+
         return function () {
             cancelFrame(update);
+            observer.disconnect();
         };
     }, []);
 
     return (
-        <ReactLenis root={!isOpen} options={{ autoRaf: false }} ref={lenisRef}>
+        <ReactLenis root options={{ autoRaf: false }} ref={lenisRef}>
             {children}
         </ReactLenis>
     );
