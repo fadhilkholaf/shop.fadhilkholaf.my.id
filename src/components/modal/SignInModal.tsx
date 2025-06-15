@@ -2,6 +2,7 @@
 
 import Form from "next/form";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -9,7 +10,6 @@ import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
 
 import { signInAction } from "@/actions/auth";
-import Terms from "@/components/misc/Terms";
 import { useSignInModal } from "@/context/SignInModalContext";
 import { cn } from "@/utils/cn";
 import { authModalFormVariants, modalVariants } from "@/utils/motion-variants";
@@ -149,6 +149,47 @@ export default function NewSignInModal() {
                     </AnimatePresence>,
                     document.body,
                 )}
+        </>
+    );
+}
+
+function Terms({ closeModal }: { closeModal: () => void }) {
+    return (
+        <>
+            <div className="flex items-center gap-x-4">
+                <input
+                    type="checkbox"
+                    name="privacy-policy"
+                    id="privacy-policy"
+                />
+                <label htmlFor="privacy-policy">
+                    {`I have read and agree with `}
+                    <Link
+                        href="/privacy-policy"
+                        className="font-semibold"
+                        onClick={closeModal}
+                    >
+                        privacy policy.
+                    </Link>
+                </label>
+            </div>
+            <div className="flex items-center gap-x-4">
+                <input
+                    type="checkbox"
+                    name="terms-and-conditions"
+                    id="terms-and-conditions"
+                />
+                <label htmlFor="terms-and-conditions">
+                    {`I have read and agree with `}
+                    <Link
+                        href="/terms-and-conditions"
+                        className="font-semibold"
+                        onClick={closeModal}
+                    >
+                        terms and conditions.
+                    </Link>
+                </label>
+            </div>
         </>
     );
 }
