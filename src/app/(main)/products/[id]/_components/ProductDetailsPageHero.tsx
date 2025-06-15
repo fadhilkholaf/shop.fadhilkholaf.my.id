@@ -1,14 +1,13 @@
 import Image from "next/image";
-import Link from "next/link";
-import { ComponentPropsWithoutRef, Suspense } from "react";
+import { Suspense } from "react";
 
 import { Session } from "next-auth";
-import Markdown from "react-markdown";
 
 import { Product } from "@/prisma/generated";
 import { formatDate, formatUsd } from "@/utils/format";
 
 import ActionWrapper from "./ActionWrapper";
+import MarkdownRenderer from "@/components/MarkdownRenderer";
 
 export default function ProductDetailsPageHero({
     session,
@@ -49,36 +48,9 @@ export default function ProductDetailsPageHero({
                     </Suspense>
                 </footer>
             </main>
-            <footer className="col-span-2">
-                <Markdown
-                    components={{
-                        a: CustomA,
-                    }}
-                >
-                    {product.description}
-                </Markdown>
+            <footer className="md:col-span-2">
+                <MarkdownRenderer>{product.description}</MarkdownRenderer>
             </footer>
         </section>
-    );
-}
-
-function CustomA({ href, ...props }: ComponentPropsWithoutRef<"a">) {
-    if (href?.startsWith("/")) {
-        return (
-            <Link
-                href={href}
-                className="underline underline-offset-2"
-                {...props}
-            />
-        );
-    }
-
-    return (
-        <a
-            href={href}
-            target="_blank"
-            className="underline underline-offset-2"
-            {...props}
-        />
     );
 }
