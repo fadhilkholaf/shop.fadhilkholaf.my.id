@@ -12,7 +12,7 @@ import PaypalWrapper from "@/components/wrapper/PaypalWrapper";
 import SignInModalProvider from "@/context/SignInModalContext";
 import { rootMetadata } from "@/data/metadata";
 
-import "./globals.css";
+import "@/styles/globals.css";
 
 export const metadata: Metadata = rootMetadata;
 
