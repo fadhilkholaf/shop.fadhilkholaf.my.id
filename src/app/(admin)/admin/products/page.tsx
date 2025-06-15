@@ -1,8 +1,8 @@
 import { getAllProduct } from "@/query/product";
 
-import ProductsAdminPageHero from "./_components/ProductsAdminPageHero";
+import ProductsAdminPageHero from "./_components/AdminProductsPageHero";
 
-export default async function ProductsPage() {
+export default async function AdminProductsPage() {
     const products = await getAllProduct();
 
     return (

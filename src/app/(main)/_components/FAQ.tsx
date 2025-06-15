@@ -25,7 +25,7 @@ export default function FAQ() {
                 <h1 className="text-center text-4xl md:text-6xl xl:text-8xl">
                     FAQ 🙋🏿‍♂️
                 </h1>
-                <p>{`Is it simple? 🤔`}</p>
+                <p>{`The things you might don't know 🤔`}</p>
             </header>
             <main>
                 <ul className="flex flex-col gap-y-8">

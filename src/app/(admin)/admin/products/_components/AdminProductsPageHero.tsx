@@ -1,4 +1,4 @@
-import PMO from "./PMO";
+import ProductModal from "./ProductModal";
 import ProductButton from "./ProductButton";
 
 export default function ProductsAdminPageHero() {
@@ -11,7 +11,7 @@ export default function ProductsAdminPageHero() {
                 <p>The repositories</p>
             </header>
             <main>
-                <PMO />
+                <ProductModal />
             </main>
             <footer className="h-screen">
                 <ProductButton>Create Product</ProductButton>
