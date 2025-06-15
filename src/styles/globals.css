@@ -1,5 +1,17 @@
 @import "tailwindcss";
 
+:root {
+    --sh-class: var(--color-fuchsia-300);
+    --sh-identifier: var(--color-fuchsia-300);
+    --sh-sign: var(--color-yellow-300);
+    --sh-property: var(--color-yellow-300);
+    --sh-entity: var(--color-blue-300);
+    --sh-jsxliterals: var(--color-blue-300);
+    --sh-string: var(--color-lime-300);
+    --sh-keyword: var(--color-orange-300);
+    --sh-comment: var(--color-purple-300);
+}
+
 @theme {
     --primary: oklch(89.9% 0.061 343.231);
     --secondary: oklch(27.8% 0.033 256.848);
@@ -21,10 +33,6 @@
 }
 
 @layer base {
-    * {
-        /* @apply outline outline-red-500; */
-    }
-
     html {
         & ::selection {
             @apply bg-secondary text-primary;
@@ -66,6 +74,26 @@
     a,
     button {
         @apply cursor-pointer;
+    }
+
+    code {
+        @apply bg-secondary inline overflow-x-auto rounded-lg px-2 py-1;
+
+        & ::selection {
+            @apply bg-primary text-secondary;
+        }
+    }
+
+    pre {
+        @apply bg-secondary overflow-hidden rounded-lg;
+
+        & > code {
+            @apply block rounded-none bg-none p-4;
+
+            & > .sh__line {
+                @apply inline-flex;
+            }
+        }
     }
 }
 
