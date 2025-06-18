@@ -10,10 +10,15 @@ import {
     useState,
 } from "react";
 
+import { Product } from "@/prisma/generated";
+import ProductModal from "@/components/modal/ProductModal";
+
 const ProductModalContext = createContext<
     | {
           isOpen: boolean;
           setIsOpen: Dispatch<SetStateAction<boolean>>;
+          product: Product | null;
+          setProduct: Dispatch<SetStateAction<Product | null>>;
       }
     | undefined
 >(undefined);
@@ -24,12 +29,14 @@ export default function ProductModalProvider({
     children: ReactNode;
 }) {
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [product, setProduct] = useState<Product | null>(null);
 
     useEffect(
         function () {
             if (isOpen) {
                 document.body.setAttribute("data-lenis-prevent", "true");
             } else {
+                setProduct(null);
                 document.body.removeAttribute("data-lenis-prevent");
             }
 
@@ -41,7 +48,10 @@ export default function ProductModalProvider({
     );
 
     return (
-        <ProductModalContext.Provider value={{ isOpen, setIsOpen }}>
+        <ProductModalContext.Provider
+            value={{ isOpen, setIsOpen, product, setProduct }}
+        >
+            <ProductModal />
             {children}
         </ProductModalContext.Provider>
     );
