@@ -102,6 +102,10 @@
         @apply mx-auto w-15/16 max-w-[100rem];
     }
 
+    .page-section {
+        @apply flex flex-col gap-y-8 md:gap-y-16;
+    }
+
     .auth-modal {
         --y-initial: 100%;
         --y-animate: 0px;
