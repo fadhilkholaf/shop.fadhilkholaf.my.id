@@ -27,9 +27,20 @@ export async function getAllProductLength() {
     return await prisma.product.count();
 }
 
-export async function getSoldProduct() {
-    return await prisma.product.findMany({
-        where: { carts: { none: { order: null } } },
-        include: { _count: true },
-    });
+// export async function getSoldProduct() {
+//     return await prisma.product.findMany({
+//         where: { carts: { none: { order: null } } },
+//         include: { _count: true },
+//     });
+// }
+
+export async function updateProduct(
+    where: Prisma.ProductWhereUniqueInput,
+    data: Prisma.ProductUpdateInput,
+) {
+    return await prisma.product.update({ where, data });
+}
+
+export async function deleteProduct(where: Prisma.ProductWhereUniqueInput) {
+    return await prisma.product.delete({ where });
 }
