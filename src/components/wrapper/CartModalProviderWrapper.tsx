@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
 
-import CartModalProvider from "@/context/CartModalContext";
+import CartModalProvider from "@/components/context/CartModalContext";
 import { auth } from "@/lib/auth";
-import { getAllCart } from "@/query/cart";
+import { getAllCart } from "@/database/cart";
 import { CartWithProduct } from "@/types/prisma-relations";
 
 export default async function CartModalProviderWrapper({

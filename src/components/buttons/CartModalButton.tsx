@@ -2,9 +2,9 @@
 
 import { ComponentPropsWithoutRef, ReactNode } from "react";
 
-import { useCartModal } from "@/context/CartModalContext";
+import { useCartModal } from "@/components/context/CartModalContext";
 
-export default function CartButton({
+export default function CartModalButton({
     children,
     ...props
 }: {

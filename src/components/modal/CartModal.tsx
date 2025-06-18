@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "motion/react";
 
 import CheckOutButton from "@/components/buttons/CheckOutButton";
 import CartItem from "@/components/CartItem";
-import { useCartModal } from "@/context/CartModalContext";
+import { useCartModal } from "@/components/context/CartModalContext";
 import { cn } from "@/utils/cn";
 import { formatUsd } from "@/utils/format";
 import { modalVariants } from "@/utils/motion-variants";
