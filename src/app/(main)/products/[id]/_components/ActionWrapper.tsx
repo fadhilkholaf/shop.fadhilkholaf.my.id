@@ -5,11 +5,11 @@ import {
     getGitHubUserById,
     getIsCollaborator,
 } from "@/actions/octokit";
-import CartButton from "@/components/buttons/CartButton";
-import SignInButton from "@/components/buttons/SignInButton";
+import CartButton from "@/components/buttons/CartModalButton";
+import SignInButton from "@/components/buttons/SignInModalButton";
+import { getAllOrder } from "@/database/order";
+import { getAllCart } from "@/database/cart";
 import { Product } from "@/prisma/generated";
-import { getAllOrder } from "@/query/order";
-import { getAllCart } from "@/query/cart";
 
 import { AddToCartButton, RequestInvitationButton } from "./ActionButton";
 
@@ -24,7 +24,7 @@ export default async function ActionWrapper({
         return (
             <SignInButton className="w-full">
                 <p className="bg-secondary text-primary w-full rounded-lg p-4 text-center">
-                    Sign in
+                    Sign in 🔐
                 </p>
             </SignInButton>
         );
@@ -40,7 +40,7 @@ export default async function ActionWrapper({
         return (
             <CartButton className="w-full">
                 <p className="bg-secondary text-primary w-full rounded-lg p-4 text-center">
-                    Check out
+                    Check out ✌️
                 </p>
             </CartButton>
         );
@@ -50,29 +50,45 @@ export default async function ActionWrapper({
         product.repositoryId,
     );
 
-    if (!gitHubRepository) {
-        return null;
+    if (!gitHubRepository.result) {
+        return (
+            <p className="bg-secondary text-primary cursor-not-allowed rounded-lg p-4 text-center">
+                Not available! 🚫
+            </p>
+        );
+    }
+
+    if (gitHubRepository.result.visibility === "public") {
+        return (
+            <a
+                href={gitHubRepository.result.html_url}
+                target="_blank"
+                className="bg-secondary text-primary inline-block w-full rounded-lg p-4 text-center"
+            >
+                View → 📃
+            </a>
+        );
     }
 
     const gitHubUser = await getGitHubUserById(session.user.githubId);
 
-    if (!gitHubUser) {
+    if (!gitHubUser.result) {
         return null;
     }
 
     const isCollaborator = await getIsCollaborator(
-        gitHubRepository.name,
-        gitHubUser.login,
+        gitHubRepository.result.name,
+        gitHubUser.result.login,
     );
 
-    if (isCollaborator) {
+    if (isCollaborator.result) {
         return (
             <a
-                href={gitHubRepository.html_url}
+                href={gitHubRepository.result.html_url}
                 target="_blank"
                 className="bg-secondary text-primary inline-block w-full rounded-lg p-4 text-center"
             >
-                Already a collaborator
+                You own this. View → 📃
             </a>
         );
     }
@@ -87,8 +103,8 @@ export default async function ActionWrapper({
     if (isOrdered.length) {
         return (
             <RequestInvitationButton
-                gitHubRepository={gitHubRepository}
-                gitHubUser={gitHubUser}
+                gitHubRepository={gitHubRepository.result}
+                gitHubUser={gitHubUser.result}
             />
         );
     }
@@ -96,7 +112,7 @@ export default async function ActionWrapper({
     return (
         <AddToCartButton product={product}>
             <p className="bg-secondary text-primary w-full rounded-lg p-4 text-center">
-                Add to cart
+                Add to cart 🛒
             </p>
         </AddToCartButton>
     );

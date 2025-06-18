@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { auth } from "@/lib/auth";
-import { getProduct } from "@/query/product";
+import { getProduct } from "@/database/product";
 
 import Hero from "./_components/ProductDetailsPageHero";
 

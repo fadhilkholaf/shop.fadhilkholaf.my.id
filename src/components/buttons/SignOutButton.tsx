@@ -4,7 +4,7 @@ import Form from "next/form";
 import { usePathname } from "next/navigation";
 
 import { signOutAction } from "@/actions/auth";
-import { useCartModal } from "@/context/CartModalContext";
+import { useCartModal } from "@/components/context/CartModalContext";
 
 export default function SignOutButton() {
     const pathname = usePathname();

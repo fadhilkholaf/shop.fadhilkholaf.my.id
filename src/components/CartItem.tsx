@@ -4,7 +4,7 @@ import Form from "next/form";
 import Image from "next/image";
 
 import { removeCartItemAction } from "@/actions/cart";
-import { useCartModal } from "@/context/CartModalContext";
+import { useCartModal } from "@/components/context/CartModalContext";
 import { Product } from "@/prisma/generated";
 import { formatUsd } from "@/utils/format";
 import Link from "next/link";

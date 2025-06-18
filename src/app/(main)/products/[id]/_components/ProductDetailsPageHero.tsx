@@ -34,7 +34,9 @@ export default function ProductDetailsPageHero({
                     <h1>{product.name}</h1>
                 </header>
                 <main>
-                    <p className="font-mono">{formatUsd(product.price)}</p>
+                    <p className="font-mono">
+                        {product.price ? `${formatUsd(product.price)}` : "Free"}
+                    </p>
                 </main>
                 <footer>
                     <Suspense

@@ -1,4 +1,4 @@
-import { getAllProduct } from "@/query/product";
+import { getAllProduct } from "@/database/product";
 
 import FAQ from "./_components/FAQ";
 // import Features from "./_components/Features";

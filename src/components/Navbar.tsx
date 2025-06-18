@@ -2,12 +2,11 @@ import Link from "next/link";
 
 import { auth } from "@/lib/auth";
 
-import CartButton from "@/components/buttons/CartButton";
+import CartButton from "@/components/buttons/CartModalButton";
+import SignInButton from "@/components/buttons/SignInModalButton";
 import SignOutButton from "@/components/buttons/SignOutButton";
+import AdminMenuModal from "@/components/modal/AdminMenuModal";
 import { cn } from "@/utils/cn";
-
-import SignInButton from "./buttons/SignInButton";
-import AdminMenuModal from "./modal/AdminMenuModal";
 
 const items = [{ title: "Products", href: "/products" }];
 

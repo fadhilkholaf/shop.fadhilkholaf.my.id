@@ -1,4 +1,4 @@
-import { getAllProduct, getAllProductLength } from "@/query/product";
+import { getAllProduct, getAllProductLength } from "@/database/product";
 
 import ProductsPageHero from "./_components/ProductsPageHero";
 

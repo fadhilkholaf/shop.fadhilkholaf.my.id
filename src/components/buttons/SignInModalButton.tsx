@@ -2,9 +2,9 @@
 
 import { ComponentPropsWithoutRef, ReactNode } from "react";
 
-import { useSignInModal } from "@/context/SignInModalContext";
+import { useSignInModal } from "@/components/context/SignInModalContext";
 
-export default function SignInButton({
+export default function SignInModalButton({
     children,
     ...props
 }: {

@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { ComponentPropsWithoutRef } from "react";
+import Link from "next/link";
+import { type ComponentPropsWithoutRef } from "react";
 
 import Markdown from "react-markdown";
 import rehypeSanitize from "rehype-sanitize";
@@ -13,12 +14,13 @@ export default function MarkdownRenderer({ children }: { children?: string }) {
                 rehypePlugins={[rehypeSanitize]}
                 remarkPlugins={[remarkGfm]}
                 components={{
+                    a: CustomA,
+                    blockquote: CustomBlockquote,
+                    code: CustomCode,
                     h1: CustomH1,
                     h2: CustomH2,
                     h3: CustomH3,
                     h4: CustomH4,
-                    blockquote: CustomBlockquote,
-                    code: CustomCode,
                     img: CustomImg,
                     ul: CustomUl,
                 }}
@@ -27,6 +29,51 @@ export default function MarkdownRenderer({ children }: { children?: string }) {
             </Markdown>
         </article>
     );
+}
+
+function CustomA({ href, ...props }: ComponentPropsWithoutRef<"a">) {
+    if (href && href.startsWith("/")) {
+        return <Link href={href} {...props} />;
+    }
+    return <a href={href} target="_blank" {...props} />;
+}
+
+function CustomBlockquote({
+    ...props
+}: ComponentPropsWithoutRef<"blockquote">) {
+    return (
+        <blockquote
+            className="rounded-lg border-l-2 px-2 py-1 backdrop-brightness-90"
+            {...props}
+        />
+    );
+}
+
+function CustomCode({ children, ...props }: ComponentPropsWithoutRef<"code">) {
+    return (
+        <code
+            dangerouslySetInnerHTML={{
+                __html: highlight(children as string),
+            }}
+            {...props}
+        />
+    );
+}
+
+function CustomH1({ ...props }: ComponentPropsWithoutRef<"h1">) {
+    return <h1 className="mt-4" {...props} />;
+}
+
+function CustomH2({ ...props }: ComponentPropsWithoutRef<"h2">) {
+    return <h2 className="mt-4" {...props} />;
+}
+
+function CustomH3({ ...props }: ComponentPropsWithoutRef<"h3">) {
+    return <h3 className="mt-4" {...props} />;
+}
+
+function CustomH4({ ...props }: ComponentPropsWithoutRef<"h4">) {
+    return <h4 className="mt-4" {...props} />;
 }
 
 function CustomImg({
@@ -53,44 +100,6 @@ function CustomImg({
     );
 }
 
-function CustomCode({ children, ...props }: ComponentPropsWithoutRef<"code">) {
-    return (
-        <code
-            dangerouslySetInnerHTML={{
-                __html: highlight(children as string),
-            }}
-            {...props}
-        />
-    );
-}
-
-function CustomBlockquote({
-    ...props
-}: ComponentPropsWithoutRef<"blockquote">) {
-    return (
-        <blockquote
-            className="rounded-lg border-l-2 px-2 py-1 backdrop-brightness-90"
-            {...props}
-        />
-    );
-}
-
 function CustomUl({ ...props }: ComponentPropsWithoutRef<"ul">) {
     return <ul className="ml-4.5 list-disc" {...props} />;
-}
-
-function CustomH1({ ...props }: ComponentPropsWithoutRef<"h1">) {
-    return <h1 className="mt-4" {...props} />;
-}
-
-function CustomH2({ ...props }: ComponentPropsWithoutRef<"h2">) {
-    return <h2 className="mt-4" {...props} />;
-}
-
-function CustomH3({ ...props }: ComponentPropsWithoutRef<"h3">) {
-    return <h3 className="mt-4" {...props} />;
-}
-
-function CustomH4({ ...props }: ComponentPropsWithoutRef<"h4">) {
-    return <h4 className="mt-4" {...props} />;
 }

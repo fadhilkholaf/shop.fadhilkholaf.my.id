@@ -4,7 +4,7 @@ import { OnApproveData } from "@paypal/paypal-js";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 
 import { captureOrderAction, createOrderAction } from "@/actions/order";
-import { useCartModal } from "@/context/CartModalContext";
+import { useCartModal } from "@/components/context/CartModalContext";
 import { Prisma } from "@/prisma/generated";
 
 export default function CheckOutButton({

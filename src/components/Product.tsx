@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { Product as P } from "@/prisma/generated";
+import { type Product as P } from "@/prisma/generated";
 import { formatUsd } from "@/utils/format";
 
 export default function Product({ product }: { product: P }) {
@@ -23,7 +23,9 @@ export default function Product({ product }: { product: P }) {
                     </p>
                     <h1>{product.name}</h1>
                 </div>
-                <p className="font-mono">{formatUsd(product.price)} USD</p>
+                <p className="font-mono">
+                    {product.price ? `${formatUsd(product.price)}` : "Free"}
+                </p>
             </main>
             <footer className="px-2 md:px-4">
                 <h4 className="flex w-full justify-between">

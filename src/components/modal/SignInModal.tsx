@@ -10,7 +10,7 @@ import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
 
 import { signInAction } from "@/actions/auth";
-import { useSignInModal } from "@/context/SignInModalContext";
+import { useSignInModal } from "@/components/context/SignInModalContext";
 import { cn } from "@/utils/cn";
 import { authModalFormVariants, modalVariants } from "@/utils/motion-variants";
 
