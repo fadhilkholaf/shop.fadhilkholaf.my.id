@@ -12,7 +12,9 @@ import { Product } from "@/prisma/generated";
 import { ResponseTemplate } from "@/types/response";
 import { responseError, responseSuccess } from "@/utils/response";
 
-export async function createPaypalOrder(products: Product[]) {
+export async function createPaypalOrder(
+    products: Product[],
+): Promise<ResponseTemplate<Order, null> | ResponseTemplate<null, string>> {
     try {
         const totalPrice = products.reduce(function (acc, product) {
             return acc + product.price;
@@ -68,31 +70,31 @@ export async function createPaypalOrder(products: Product[]) {
         });
 
         if (response.statusCode >= 400) {
-            return null;
-        }
-
-        return response;
-    } catch (error) {
-        console.error(error);
-
-        return null;
-    }
-}
-
-export async function capturePaypalOrder(
-    id: string,
-): Promise<ResponseTemplate<Order | null, string | null>> {
-    try {
-        const response = await paypalOrder.captureOrder({ id });
-
-        if (response.statusCode >= 400) {
-            return responseError("Error capturing order!");
+            return responseError("Error creating PayPal order!");
         }
 
         return responseSuccess(response.result);
     } catch (error) {
         console.error(error);
 
-        return responseError("Unexpected error capturing order!");
+        return responseError("Unexpected error creating PayPal order!");
+    }
+}
+
+export async function capturePaypalOrder(
+    id: string,
+): Promise<ResponseTemplate<Order, null> | ResponseTemplate<null, string>> {
+    try {
+        const response = await paypalOrder.captureOrder({ id });
+
+        if (response.statusCode >= 400) {
+            return responseError("Error capturing PayPal order!");
+        }
+
+        return responseSuccess(response.result);
+    } catch (error) {
+        console.error(error);
+
+        return responseError("Unexpected error capturing PayPal order!");
     }
 }

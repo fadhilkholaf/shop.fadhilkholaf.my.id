@@ -5,9 +5,9 @@ import { revalidatePath } from "next/cache";
 import { Order } from "@paypal/paypal-server-sdk";
 
 import { auth } from "@/lib/auth";
-import { getCart } from "@/query/cart";
-import { createOrder } from "@/query/order";
-import { getAllProduct } from "@/query/product";
+import { getCart } from "@/database/cart";
+import { createOrder } from "@/database/order";
+import { getAllProduct } from "@/database/product";
 import {
     CartWithOrderProductAndUser,
     OrderWithCartWithProductAndUser,
@@ -24,12 +24,12 @@ import { capturePaypalOrder, createPaypalOrder } from "./paypal";
 
 export async function createOrderAction(
     cartId: number,
-): Promise<ResponseTemplate<Order | null, string | null>> {
+): Promise<ResponseTemplate<Order, null> | ResponseTemplate<null, string>> {
     try {
         const session = await auth();
 
         if (!session) {
-            return responseError("Unauthenticated!");
+            return responseError("Unauthenticated user!");
         }
 
         const cart = (await getCart(
@@ -38,7 +38,7 @@ export async function createOrderAction(
         )) as CartWithOrderProductAndUser;
 
         if (cart.user.githubId !== session.user.githubId) {
-            return responseError("Forbidden!");
+            return responseError("Unauthotized user!");
         }
 
         if (cart.order) {
@@ -46,7 +46,7 @@ export async function createOrderAction(
         }
 
         if (!cart.products.length) {
-            return responseError("At lest one product in a cart!");
+            return responseError("At least one product in a cart!");
         }
 
         const existingProducts = await getAllProduct({
@@ -63,8 +63,8 @@ export async function createOrderAction(
 
         const createdPaypalOrder = await createPaypalOrder(existingProducts);
 
-        if (!createdPaypalOrder) {
-            return responseError("Unexpected error creating paypal order!");
+        if (!createdPaypalOrder.result) {
+            return createdPaypalOrder;
         }
 
         revalidatePath("/", "layout");
@@ -81,18 +81,19 @@ export async function captureOrderAction(
     id: string,
     cartId: number,
 ): Promise<
-    ResponseTemplate<OrderWithCartWithProductAndUser | null, string | null>
+    | ResponseTemplate<OrderWithCartWithProductAndUser, null>
+    | ResponseTemplate<null, string>
 > {
     try {
         const capturedPaypalOrder = await capturePaypalOrder(id);
 
-        if (capturedPaypalOrder.error) {
-            return responseError(capturedPaypalOrder.error);
+        if (!capturedPaypalOrder.result) {
+            return capturedPaypalOrder;
         }
 
         const createdOrder = (await createOrder(
             {
-                orderId: capturedPaypalOrder.result?.id || id,
+                orderId: capturedPaypalOrder.result.id || id,
                 cart: { connect: { id: cartId } },
             },
             { cart: { include: { user: true, products: true } } },
@@ -104,23 +105,31 @@ export async function captureOrderAction(
                     product.repositoryId,
                 );
 
-                if (!gitHubRepository) {
-                    throw new Error(
-                        `GitHub repository with id ${product.repositoryId} not found!`,
-                    );
+                if (!gitHubRepository.result) {
+                    // TODO: Add a propper error handling
+
+                    // throw new Error(
+                    //     `Id: ${product.repositoryId}; ${gitHubRepository.error}`,
+                    // );
+                    return;
                 }
 
                 const gitHubUser = await getGitHubUserById(
                     createdOrder.cart.user.githubId,
                 );
 
-                if (!gitHubUser) {
-                    throw new Error(`GitHub user not found!`);
+                if (!gitHubUser.result) {
+                    // TODO: Add a propper error handling
+
+                    // throw new Error(
+                    //     `Id: ${createdOrder.cart.user.githubId}; ${gitHubUser.error}`,
+                    // );
+                    return;
                 }
 
                 await addRepositoryCollaborator(
-                    gitHubRepository.name,
-                    gitHubUser.login,
+                    gitHubRepository.result.name,
+                    gitHubUser.result.login,
                 );
             }),
         );
