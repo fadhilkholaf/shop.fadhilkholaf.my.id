@@ -1,6 +1,6 @@
 import { type ReactNode } from "react";
 
-import ProductModalProvider from "@/context/ProductModalContext";
+import ProductModalProvider from "@/components/context/ProductModalContext";
 
 export default function AdminProductsLayout({
     children,

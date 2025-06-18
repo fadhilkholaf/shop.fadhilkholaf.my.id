@@ -2,9 +2,9 @@
 
 import { ComponentPropsWithoutRef, ReactNode } from "react";
 
-import { useProductModal } from "@/context/ProductModalContext";
+import { useProductModal } from "@/components/context/ProductModalContext";
 
-export default function ProductButton({
+export default function ProductModalButton({
     children,
     ...props
 }: {
