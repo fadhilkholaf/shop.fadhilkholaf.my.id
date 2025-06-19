@@ -1,4 +1,4 @@
-// import { getSoldProduct } from "@/query/product";
+// import { getSoldProduct } from "@/database/product";
 import AdminPageHero from "./_components/AdminPageHero";
 
 export default async function AdminPage() {

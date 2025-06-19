@@ -1,4 +1,4 @@
-import { ResponseTemplate } from "@/types/response";
+import { type ResponseTemplate } from "@/types/response";
 
 export function responseSuccess<ResultTypeTemplate>(
     result: ResultTypeTemplate,

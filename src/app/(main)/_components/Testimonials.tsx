@@ -15,7 +15,7 @@ const testimonials: { title: string; desc: string }[] = [
 
 export default function Testimonials() {
     return (
-        <section className="flex flex-col gap-y-8 md:gap-y-16">
+        <section className="page-section">
             <header className="flex flex-col items-center">
                 <h1 className="text-center text-4xl md:text-6xl xl:text-8xl">
                     They Say 🥷🏿

@@ -7,6 +7,7 @@ import { Product } from "@/prisma/generated";
 import { formatDate, formatUsd } from "@/utils/format";
 
 import ActionWrapper from "./ActionWrapper";
+import MarkdownRenderer from "@/components/MarkdownRenderer";
 
 export default function ProductDetailsPageHero({
     session,
@@ -21,8 +22,8 @@ export default function ProductDetailsPageHero({
                 <Image
                     src={product.image}
                     alt={product.name}
-                    width={1024}
-                    height={1024}
+                    width={1920}
+                    height={1080}
                     priority
                     className="aspect-video w-full rounded-lg object-cover"
                 />
@@ -33,12 +34,16 @@ export default function ProductDetailsPageHero({
                     <h1>{product.name}</h1>
                 </header>
                 <main>
-                    <p className="font-mono">{formatUsd(product.price)}</p>
+                    <p className="font-mono">
+                        {product.price
+                            ? `${formatUsd(product.price)} USD`
+                            : "Free"}
+                    </p>
                 </main>
                 <footer>
                     <Suspense
                         fallback={
-                            <p className="bg-secondary text-primary w-full rounded-lg p-4 text-center">
+                            <p className="bg-secondary text-primary w-full cursor-wait rounded-lg p-4 text-center">
                                 Checking availability
                             </p>
                         }
@@ -47,6 +52,9 @@ export default function ProductDetailsPageHero({
                     </Suspense>
                 </footer>
             </main>
+            <footer className="md:col-span-2">
+                <MarkdownRenderer>{product.description}</MarkdownRenderer>
+            </footer>
         </section>
     );
 }

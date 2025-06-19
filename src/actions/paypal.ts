@@ -12,13 +12,13 @@ import { Product } from "@/prisma/generated";
 import { ResponseTemplate } from "@/types/response";
 import { responseError, responseSuccess } from "@/utils/response";
 
-export async function createPaypalOrder(products: Product[]) {
+export async function createPaypalOrder(
+    products: Product[],
+): Promise<ResponseTemplate<Order, null> | ResponseTemplate<null, string>> {
     try {
         const totalPrice = products.reduce(function (acc, product) {
             return acc + product.price;
         }, 0);
-        const factor = Math.pow(10, 2);
-        const totalTax = Math.round(totalPrice * 0.12 * factor) / factor;
 
         const response = await paypalOrder.createOrder({
             body: {
@@ -35,35 +35,22 @@ export async function createPaypalOrder(products: Product[]) {
                     {
                         amount: {
                             currencyCode: "USD",
-                            value: (totalPrice + totalTax).toFixed(2),
+                            value: totalPrice.toString(),
                             breakdown: {
                                 itemTotal: {
                                     currencyCode: "USD",
                                     value: totalPrice.toString(),
                                 },
-                                taxTotal: {
-                                    currencyCode: "USD",
-                                    value: totalTax.toString(),
-                                },
                             },
                         },
                         items: products.map(function (product) {
-                            const price = product.price;
-                            const tax =
-                                Math.round(product.price * 0.12 * factor) /
-                                factor;
-
                             return {
                                 name: product.name,
                                 category: ItemCategory.DigitalGoods,
                                 quantity: "1",
                                 unitAmount: {
                                     currencyCode: "USD",
-                                    value: price.toString(),
-                                },
-                                tax: {
-                                    currencyCode: "USD",
-                                    value: tax.toString(),
+                                    value: product.price.toString(),
                                 },
                                 imageUrl: product.image,
                                 url: `https://shop.fadhilkholaf.my.id/products/${product.publicId}`,
@@ -75,31 +62,31 @@ export async function createPaypalOrder(products: Product[]) {
         });
 
         if (response.statusCode >= 400) {
-            return null;
-        }
-
-        return response;
-    } catch (error) {
-        console.error(error);
-
-        return null;
-    }
-}
-
-export async function capturePaypalOrder(
-    id: string,
-): Promise<ResponseTemplate<Order | null, string | null>> {
-    try {
-        const response = await paypalOrder.captureOrder({ id });
-
-        if (response.statusCode >= 400) {
-            return responseError("Error capturing order!");
+            return responseError("Error creating PayPal order!");
         }
 
         return responseSuccess(response.result);
     } catch (error) {
         console.error(error);
 
-        return responseError("Unexpected error capturing order!");
+        return responseError("Unexpected error creating PayPal order!");
+    }
+}
+
+export async function capturePaypalOrder(
+    id: string,
+): Promise<ResponseTemplate<Order, null> | ResponseTemplate<null, string>> {
+    try {
+        const response = await paypalOrder.captureOrder({ id });
+
+        if (response.statusCode >= 400) {
+            return responseError("Error capturing PayPal order!");
+        }
+
+        return responseSuccess(response.result);
+    } catch (error) {
+        console.error(error);
+
+        return responseError("Unexpected error capturing PayPal order!");
     }
 }

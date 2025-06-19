@@ -21,7 +21,7 @@ const variants: Variants = {
         transition: {
             type: "tween",
             duration: 0.5,
-            ease: [0.16, 1, 0.3, 1],
+            ease: [0.65, 0, 0.35, 1],
         },
     },
     animate: {
@@ -30,7 +30,7 @@ const variants: Variants = {
         transition: {
             type: "tween",
             duration: 0.5,
-            ease: [0.16, 1, 0.3, 1],
+            ease: [0.65, 0, 0.35, 1],
         },
     },
 };

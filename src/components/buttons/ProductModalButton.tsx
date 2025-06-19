@@ -2,15 +2,15 @@
 
 import { ComponentPropsWithoutRef, ReactNode } from "react";
 
-import { useCartModal } from "@/context/CartModalContext";
+import { useProductModal } from "@/components/context/ProductModalContext";
 
-export default function CartButton({
+export default function ProductModalButton({
     children,
     ...props
 }: {
     children: ReactNode;
 } & Omit<ComponentPropsWithoutRef<"button">, "type" | "onClick">) {
-    const { setIsOpen } = useCartModal();
+    const { setIsOpen } = useProductModal();
 
     return (
         <button

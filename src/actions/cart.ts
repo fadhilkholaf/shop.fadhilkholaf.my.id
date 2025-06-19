@@ -3,20 +3,22 @@
 import { revalidatePath } from "next/cache";
 
 import { auth } from "@/lib/auth";
-import { createCart, getAllCart, updateCart } from "@/query/cart";
-import { getProduct } from "@/query/product";
+import { createCart, getAllCart, updateCart } from "@/database/cart";
+import { getProduct } from "@/database/product";
 import { CartWithOrder, CartWithProduct } from "@/types/prisma-relations";
 import { ResponseTemplate } from "@/types/response";
 import { responseError, responseSuccess } from "@/utils/response";
 
 export async function addToCartAction(
     productId: number,
-): Promise<ResponseTemplate<CartWithProduct | null, string | null>> {
+): Promise<
+    ResponseTemplate<CartWithProduct, null> | ResponseTemplate<null, string>
+> {
     try {
         const session = await auth();
 
         if (!session) {
-            return responseError("Unauthorized!");
+            return responseError("Unauthorized user!");
         }
 
         const product = await getProduct({ id: productId });
@@ -68,7 +70,9 @@ export async function addToCartAction(
 export async function removeCartItemAction(
     cartId: number,
     productId: number,
-): Promise<ResponseTemplate<CartWithProduct | null, string | null>> {
+): Promise<
+    ResponseTemplate<CartWithProduct, null> | ResponseTemplate<null, string>
+> {
     try {
         const updatedCart = (await updateCart(
             { id: cartId },

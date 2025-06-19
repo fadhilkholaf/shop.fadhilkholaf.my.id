@@ -32,6 +32,7 @@ model Product {
     repositoryId Int      @unique
     name         String
     category     String
+    description  String
     image        String
     price        Int
     userId       Int

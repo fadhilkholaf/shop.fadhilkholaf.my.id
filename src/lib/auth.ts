@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import { DefaultJWT } from "next-auth/jwt";
 import GitHub from "next-auth/providers/github";
 
-import { createUser, getUser, updateUser } from "@/query/user";
+import { createUser, getUser, updateUser } from "@/database/user";
 import { Role } from "@/prisma/generated";
 
 declare module "next-auth" {

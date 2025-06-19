@@ -5,7 +5,7 @@ import { ReactNode } from "react";
 
 import { addToCartAction } from "@/actions/cart";
 import { addRepositoryCollaborator } from "@/actions/octokit";
-import { useCartModal } from "@/context/CartModalContext";
+import { useCartModal } from "@/components/context/CartModalContext";
 import { Product } from "@/prisma/generated";
 import { GitHubRepository, GitHubUser } from "@/types/octokit";
 
@@ -24,6 +24,8 @@ export function AddToCartButton({
                 const response = await addToCartAction(product.id);
 
                 if (response.error) {
+                    // TODO: Add a toast for showing the error
+
                     return;
                 }
 
@@ -55,6 +57,9 @@ export function RequestInvitationButton({
                 );
 
                 if (!response.result) {
+                    // TODO: Add a toast for showing the error
+                    alert(response.error);
+
                     return;
                 }
 
@@ -63,7 +68,7 @@ export function RequestInvitationButton({
         >
             <button type="submit" className="w-full">
                 <p className="bg-secondary text-primary w-full rounded-lg p-4 text-center">
-                    Request invitation
+                    Request invitation → 📃
                 </p>
             </button>
         </Form>

@@ -19,12 +19,12 @@ export default function ProductsPageHero({
     const nextPage = page >= 1 ? (page < totalPage ? page + 1 : totalPage) : 1;
 
     return (
-        <section className="flex flex-col gap-y-8 md:gap-y-16">
+        <section className="page-section">
             <header className="flex flex-col items-center">
                 <h1 className="text-4xl md:text-6xl xl:text-8xl">
                     Products 📃
                 </h1>
-                <p>Take it if you want it! 👇🏿</p>
+                <p>Take a look! 👇🏿</p>
             </header>
             <main>
                 <ul className="grid grid-cols-1 gap-x-8 gap-y-8 md:gap-y-16 lg:grid-cols-2">

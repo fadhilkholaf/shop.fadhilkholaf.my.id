@@ -6,7 +6,7 @@ import { formatDate } from "@/utils/format";
 
 export default function MainPageHero({ product }: { product: P | null }) {
     return (
-        <section className="flex flex-col gap-y-8">
+        <section className="page-section">
             <header className="flex flex-col items-center">
                 <h1 className="text-4xl md:text-6xl xl:text-8xl">
                     I Sell Code 👩🏿‍💻

@@ -7,15 +7,15 @@ import { AnimatePresence, motion } from "motion/react";
 
 import CheckOutButton from "@/components/buttons/CheckOutButton";
 import CartItem from "@/components/CartItem";
-import { useCartModal } from "@/context/CartModalContext";
+import { useCartModal } from "@/components/context/CartModalContext";
 import { cn } from "@/utils/cn";
 import { formatUsd } from "@/utils/format";
 import { modalVariants } from "@/utils/motion-variants";
 
 export default function CartModal() {
-    const { isOpen, setIsOpen, cartData: cart } = useCartModal();
-
     const cartModalRef = useRef<HTMLDivElement>(null);
+
+    const { isOpen, setIsOpen, cartData: cart } = useCartModal();
 
     useEffect(
         function () {
@@ -105,10 +105,10 @@ export default function CartModal() {
                                             Close
                                         </button>
                                     </header>
-                                    <main className="h-full overflow-y-scroll pr-4">
-                                        <ul className="flex flex-col gap-y-8">
-                                            {cart &&
-                                                cart.products.map(
+                                    {cart ? (
+                                        <main className="h-full overflow-y-scroll pr-4">
+                                            <ul className="flex flex-col gap-y-8">
+                                                {cart.products.map(
                                                     function (product, i) {
                                                         return (
                                                             <li key={i}>
@@ -121,12 +121,17 @@ export default function CartModal() {
                                                         );
                                                     },
                                                 )}
-                                        </ul>
-                                    </main>
+                                            </ul>
+                                        </main>
+                                    ) : (
+                                        <main className="flex h-full items-center justify-center">
+                                            <p>{`You don't have anything here. 🥷🏿`}</p>
+                                        </main>
+                                    )}
                                     {cart && !!cart.products.length && (
                                         <footer className="flex flex-col gap-y-4">
-                                            <h3 className="flex justify-between font-mono">
-                                                <span>Total + VAT:</span>
+                                            <h4 className="flex justify-between font-mono">
+                                                <span>Total:</span>
                                                 <span>
                                                     {formatUsd(
                                                         cart.products.reduce(
@@ -136,10 +141,10 @@ export default function CartModal() {
                                                                 );
                                                             },
                                                             0,
-                                                        ) * 1.12,
+                                                        ),
                                                     )}
                                                 </span>
-                                            </h3>
+                                            </h4>
                                             <CheckOutButton cart={cart} />
                                         </footer>
                                     )}

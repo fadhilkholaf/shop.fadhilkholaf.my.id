@@ -1,5 +1,17 @@
 @import "tailwindcss";
 
+:root {
+    --sh-class: var(--color-fuchsia-300);
+    --sh-identifier: var(--color-fuchsia-300);
+    --sh-sign: var(--color-yellow-300);
+    --sh-property: var(--color-yellow-300);
+    --sh-entity: var(--color-blue-300);
+    --sh-jsxliterals: var(--color-blue-300);
+    --sh-string: var(--color-lime-300);
+    --sh-keyword: var(--color-orange-300);
+    --sh-comment: var(--color-purple-300);
+}
+
 @theme {
     --primary: oklch(89.9% 0.061 343.231);
     --secondary: oklch(27.8% 0.033 256.848);
@@ -8,20 +20,19 @@
 @theme inline {
     --color-primary: var(--color-pink-200);
     --color-secondary: var(--color-gray-800);
-    --color-error: var(--color-red-800);
+    --color-success: var(--color-green-400);
+    --color-error: var(--color-red-400);
     --color-github: #101411;
 
     --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 
     --font-sans: var(--font-geist);
     --font-mono: var(--font-geist-mono);
+
+    --default-mono-font-family: var(--font-geist-mono);
 }
 
 @layer base {
-    * {
-        /* @apply outline outline-red-500; */
-    }
-
     html {
         & ::selection {
             @apply bg-secondary text-primary;
@@ -64,11 +75,35 @@
     button {
         @apply cursor-pointer;
     }
+
+    code {
+        @apply bg-secondary inline overflow-x-auto rounded-lg px-2 py-1;
+
+        & ::selection {
+            @apply bg-primary text-secondary;
+        }
+    }
+
+    pre {
+        @apply bg-secondary overflow-hidden rounded-lg;
+
+        & > code {
+            @apply block rounded-none bg-none p-4;
+
+            & > .sh__line {
+                @apply inline-flex;
+            }
+        }
+    }
 }
 
 @layer components {
     .layout {
         @apply mx-auto w-15/16 max-w-[100rem];
+    }
+
+    .page-section {
+        @apply flex flex-col gap-y-8 md:gap-y-16;
     }
 
     .auth-modal {

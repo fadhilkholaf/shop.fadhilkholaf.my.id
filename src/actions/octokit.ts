@@ -1,13 +1,21 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+
 import { RequestError } from "octokit";
 
 import { octokit } from "@/lib/octokit";
-import { GitHubAddCollaborator, GitHubRepository } from "@/types/octokit";
-import { ResponseTemplate } from "@/types/response";
+import {
+    type GitHubAddCollaborator,
+    type GitHubRepository,
+    type GitHubUser,
+} from "@/types/octokit";
+import { type ResponseTemplate } from "@/types/response";
 import { responseError, responseSuccess } from "@/utils/response";
 
-async function getGitHubAuthenticatedUser() {
+async function getGitHubAuthenticatedUser(): Promise<
+    ResponseTemplate<GitHubUser["data"], null> | ResponseTemplate<null, string>
+> {
     try {
         const { data } = await octokit.request("GET /user", {
             headers: {
@@ -15,15 +23,19 @@ async function getGitHubAuthenticatedUser() {
             },
         });
 
-        return data;
+        return responseSuccess(data);
     } catch (error) {
         console.error(error);
 
-        return null;
+        return responseError("Unexpected error getting authenticated user!");
     }
 }
 
-export async function getGitHubUserById(account_id: number) {
+export async function getGitHubUserById(
+    account_id: number,
+): Promise<
+    ResponseTemplate<GitHubUser["data"], null> | ResponseTemplate<null, string>
+> {
     try {
         const { data } = await octokit.request("GET /user/{account_id}", {
             account_id,
@@ -32,39 +44,49 @@ export async function getGitHubUserById(account_id: number) {
             },
         });
 
-        return data;
+        return responseSuccess(data);
     } catch (error) {
         console.error(error);
 
-        return null;
+        return responseError("Unexpected error getting user by id!");
     }
 }
 
-export async function getGitHubRepository(repo: string) {
+export async function getGitHubRepository(
+    repo: string,
+): Promise<
+    | ResponseTemplate<GitHubRepository["data"], null>
+    | ResponseTemplate<null, string>
+> {
     try {
         const gitHubAuthenticatedUser = await getGitHubAuthenticatedUser();
 
-        if (!gitHubAuthenticatedUser) {
-            return null;
+        if (!gitHubAuthenticatedUser.result) {
+            return gitHubAuthenticatedUser;
         }
 
         const { data } = await octokit.request("GET /repos/{owner}/{repo}", {
-            owner: gitHubAuthenticatedUser.login,
+            owner: gitHubAuthenticatedUser.result.login,
             repo,
             headers: {
                 "X-GitHub-Api-Version": "2022-11-28",
             },
         });
 
-        return data;
+        return responseSuccess(data);
     } catch (error) {
         console.error(error);
 
-        return null;
+        return responseError("Unexpected error getting repository!");
     }
 }
 
-export async function getGitHubRepositoryById(repository_id: number) {
+export async function getGitHubRepositoryById(
+    repository_id: number,
+): Promise<
+    | ResponseTemplate<GitHubRepository["data"], null>
+    | ResponseTemplate<null, string>
+> {
     try {
         const { data } = (await octokit.request(
             "GET /repositories/{repository_id}",
@@ -76,26 +98,29 @@ export async function getGitHubRepositoryById(repository_id: number) {
             },
         )) as GitHubRepository;
 
-        return data;
+        return responseSuccess(data);
     } catch (error) {
         console.error(error);
 
-        return null;
+        return responseError("Unexpected error getting repository by id!");
     }
 }
 
-export async function getIsCollaborator(repo: string, username: string) {
+export async function getIsCollaborator(
+    repo: string,
+    username: string,
+): Promise<ResponseTemplate<string, null> | ResponseTemplate<null, string>> {
     try {
         const gitHubAuthenticatedUser = await getGitHubAuthenticatedUser();
 
-        if (!gitHubAuthenticatedUser) {
-            return null;
+        if (!gitHubAuthenticatedUser.result) {
+            return gitHubAuthenticatedUser;
         }
 
-        const { status } = await octokit.request(
+        await octokit.request(
             "GET /repos/{owner}/{repo}/collaborators/{username}",
             {
-                owner: gitHubAuthenticatedUser.login,
+                owner: gitHubAuthenticatedUser.result.login,
                 repo,
                 username,
                 headers: {
@@ -104,15 +129,17 @@ export async function getIsCollaborator(repo: string, username: string) {
             },
         );
 
-        return status;
+        return responseSuccess("User is a collaborator!");
     } catch (error) {
-        if (error instanceof RequestError) {
-            return null;
-        }
-
         console.error(error);
 
-        return null;
+        if (error instanceof RequestError) {
+            return responseError("User is not a collaborator!");
+        }
+
+        return responseError(
+            "Unexpected error getting is user a collaborator!",
+        );
     }
 }
 
@@ -120,19 +147,20 @@ export async function addRepositoryCollaborator(
     repo: string,
     username: string,
 ): Promise<
-    ResponseTemplate<GitHubAddCollaborator["data"] | null, string | null>
+    | ResponseTemplate<GitHubAddCollaborator["data"], null>
+    | ResponseTemplate<null, string>
 > {
     try {
         const gitHubAuthenticatedUser = await getGitHubAuthenticatedUser();
 
-        if (!gitHubAuthenticatedUser) {
-            return responseError("Unauthenticated!");
+        if (!gitHubAuthenticatedUser.result) {
+            return gitHubAuthenticatedUser;
         }
 
-        const { data } = await octokit.request(
+        const { data, status } = await octokit.request(
             "PUT /repos/{owner}/{repo}/collaborators/{username}",
             {
-                owner: gitHubAuthenticatedUser.login,
+                owner: gitHubAuthenticatedUser.result.login,
                 repo,
                 username,
                 permission: "pull",
@@ -142,9 +170,19 @@ export async function addRepositoryCollaborator(
             },
         );
 
+        revalidatePath("/", "layout");
+
+        if (status !== 201) {
+            return responseError("Already a collaborator!");
+        }
+
         return responseSuccess(data);
     } catch (error) {
         console.error(error);
+
+        if (error instanceof RequestError) {
+            return responseError("Error sending invitation!");
+        }
 
         return responseError("Unexpected error sending invitation!");
     }

@@ -1,4 +1,4 @@
-import { Variants } from "motion/react";
+import { type Variants } from "motion/react";
 
 export const modalVariants: Variants = {
     initial: {
@@ -21,6 +21,26 @@ export const authModalFormVariants: Variants = {
         },
     },
     animate: {
+        y: "var(--y-animate)",
+        transition: {
+            type: "tween",
+            duration: 0.5,
+            ease: [0.16, 1, 0.3, 1],
+        },
+    },
+};
+export const cartModalVariants: Variants = {
+    initial: {
+        x: "var(--x-initial)",
+        y: "var(--y-initial)",
+        transition: {
+            type: "tween",
+            duration: 0.5,
+            ease: [0.16, 1, 0.3, 1],
+        },
+    },
+    animate: {
+        x: "var(--x-animate)",
         y: "var(--y-animate)",
         transition: {
             type: "tween",

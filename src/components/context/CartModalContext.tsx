@@ -10,8 +10,8 @@ import {
     useState,
 } from "react";
 
-import { Prisma } from "@/prisma/generated";
 import CartModal from "@/components/modal/CartModal";
+import { Prisma } from "@/prisma/generated";
 import { CartWithProduct } from "@/types/prisma-relations";
 
 const CartModalContext = createContext<
@@ -45,16 +45,15 @@ export default function CartModalProvider({
     useEffect(
         function () {
             if (isOpen) {
-                document.documentElement.classList.add("overflow-hidden");
+                document.body.setAttribute("data-lenis-prevent", "true");
             } else {
-                document.documentElement.classList.remove("overflow-hidden");
+                document.body.removeAttribute("data-lenis-prevent");
             }
 
             return function () {
-                document.documentElement.classList.remove("overflow-hidden");
+                document.body.removeAttribute("data-lenis-prevent");
             };
         },
-
         [isOpen],
     );
 

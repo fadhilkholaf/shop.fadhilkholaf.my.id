@@ -37,7 +37,10 @@ export default function Footer() {
                                                     {item.title}
                                                 </Link>
                                             ) : (
-                                                <a href={item.href}>
+                                                <a
+                                                    href={item.href}
+                                                    target="_blank"
+                                                >
                                                     {item.title}
                                                 </a>
                                             )}

@@ -2,12 +2,11 @@ import Link from "next/link";
 
 import { auth } from "@/lib/auth";
 
-import CartButton from "@/components/buttons/CartButton";
+import CartButton from "@/components/buttons/CartModalButton";
+import SignInButton from "@/components/buttons/SignInModalButton";
 import SignOutButton from "@/components/buttons/SignOutButton";
+import AdminMenuModal from "@/components/modal/AdminMenuModal";
 import { cn } from "@/utils/cn";
-
-import SignInButton from "./buttons/SignInButton";
-import AdminMenuModal from "./modal/AdminMenuModal";
 
 const items = [{ title: "Products", href: "/products" }];
 
@@ -27,7 +26,7 @@ export default async function Navbar() {
             <nav className={cn("layout", "py-2", "flex gap-x-8 md:gap-x-16")}>
                 <header>
                     <Link href="/">
-                        <h4>Shop.</h4>
+                        <h4>shop.</h4>
                     </Link>
                 </header>
                 <main className="w-full">

@@ -7,12 +7,20 @@ import { cn } from "@/utils/cn";
 
 const qnas: { q: string; a: string }[] = [
     {
-        q: "How this thing work?",
-        a: "Login, add to cart, checkout, request invitations.",
+        q: "What is this?",
+        a: "Hello, this is a web app for selling @fadhilkholaf private GitHub repo access. I will update this app frequently and may be I will add more product like website template and website hosting maintenance. ✌🏿",
     },
     {
-        q: "Payment",
-        a: "Accept PayPal or credit card.",
+        q: "How is this thing work?",
+        a: "Login, select product, add to cart, checkout, request invitations.",
+    },
+    {
+        q: "Available payment?",
+        a: "PayPal or credit card.",
+    },
+    {
+        q: "Is it lifetime access?",
+        a: "Yes.",
     },
 ];
 
@@ -20,12 +28,12 @@ export default function FAQ() {
     const [openIndex, setOpenIndex] = useState<number | null>(null);
 
     return (
-        <section className="flex flex-col gap-y-8 md:gap-y-16">
+        <section className="page-section">
             <header className="flex flex-col items-center">
                 <h1 className="text-center text-4xl md:text-6xl xl:text-8xl">
                     FAQ 🙋🏿‍♂️
                 </h1>
-                <p>{`Is it simple? 🤔`}</p>
+                <p>{`The things you might not know 🤔`}</p>
             </header>
             <main>
                 <ul className="flex flex-col gap-y-8">
