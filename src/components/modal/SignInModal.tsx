@@ -89,8 +89,11 @@ export default function NewSignInModal() {
                                         )}
                                     >
                                         <header>
-                                            <h3 className="font-mono">Shop.</h3>
+                                            <h4 className="font-mono">Shop.</h4>
                                         </header>
+                                        <main>
+                                            <h1>🔐✌️</h1>
+                                        </main>
                                     </div>
                                     <Form
                                         action={async function (formData) {
@@ -110,7 +113,7 @@ export default function NewSignInModal() {
                                         )}
                                     >
                                         <header>
-                                            <h3>Sign In</h3>
+                                            <h4>Sign In</h4>
                                         </header>
                                         <main>
                                             <button

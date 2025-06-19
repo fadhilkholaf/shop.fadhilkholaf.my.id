@@ -131,11 +131,11 @@ export async function getIsCollaborator(
 
         return responseSuccess("User is a collaborator!");
     } catch (error) {
+        console.error(error);
+
         if (error instanceof RequestError) {
             return responseError("User is not a collaborator!");
         }
-
-        console.error(error);
 
         return responseError(
             "Unexpected error getting is user a collaborator!",
@@ -157,7 +157,7 @@ export async function addRepositoryCollaborator(
             return gitHubAuthenticatedUser;
         }
 
-        const { data } = await octokit.request(
+        const { data, status } = await octokit.request(
             "PUT /repos/{owner}/{repo}/collaborators/{username}",
             {
                 owner: gitHubAuthenticatedUser.result.login,
@@ -172,13 +172,17 @@ export async function addRepositoryCollaborator(
 
         revalidatePath("/", "layout");
 
+        if (status !== 201) {
+            return responseError("Already a collaborator!");
+        }
+
         return responseSuccess(data);
     } catch (error) {
+        console.error(error);
+
         if (error instanceof RequestError) {
             return responseError("Error sending invitation!");
         }
-
-        console.error(error);
 
         return responseError("Unexpected error sending invitation!");
     }

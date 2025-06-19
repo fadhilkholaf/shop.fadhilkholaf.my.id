@@ -8,7 +8,7 @@ import { cn } from "@/utils/cn";
 const qnas: { q: string; a: string }[] = [
     {
         q: "What is this?",
-        a: "Hello, this is a web app for selling my private repo access. I will update this app frequently and may be I will add more product like website template and website hosting maintenance. ✌🏿",
+        a: "Hello, this is a web app for selling @fadhilkholaf private GitHub repo access. I will update this app frequently and may be I will add more product like website template and website hosting maintenance. ✌🏿",
     },
     {
         q: "How is this thing work?",

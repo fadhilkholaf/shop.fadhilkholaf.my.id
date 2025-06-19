@@ -126,7 +126,7 @@ export default function ProductForm({
                     Close
                 </button>
             </header>
-            <main className="flex h-full flex-col gap-y-4 overflow-y-scroll pr-4">
+            <main className="flex h-full flex-col gap-y-4 overflow-y-scroll rounded-lg pr-4">
                 <Input
                     label="Repo"
                     type="text"
@@ -203,7 +203,9 @@ export default function ProductForm({
                     type="submit"
                     className="bg-secondary text-primary w-full rounded-lg px-4 py-2 md:w-fit"
                 >
-                    {isPending ? "Creating product..." : "Create product"}
+                    {product
+                        ? `${isPending ? "Updating..." : "Update"}`
+                        : `${isPending ? "Creating..." : "Create"}`}
                 </button>
             </footer>
         </Form>

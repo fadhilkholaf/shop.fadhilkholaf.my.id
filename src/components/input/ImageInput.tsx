@@ -12,14 +12,16 @@ export default function ImageInput({
 >) {
     return (
         <article className="flex flex-col">
-            <Image
-                src={preview}
-                alt="Product image"
-                width={1024}
-                height={1024}
-                priority
-                className="aspect-video w-full rounded-lg object-cover"
-            />
+            <header className="bg-secondary flex flex-col gap-y-2 rounded-2xl p-2 md:rounded-3xl md:p-4">
+                <Image
+                    src={preview}
+                    alt="Product image"
+                    width={1920}
+                    height={1080}
+                    priority
+                    className="aspect-video w-full rounded-lg object-cover"
+                />
+            </header>
             <label htmlFor={props.id}>{label}</label>
             <input
                 type="file"

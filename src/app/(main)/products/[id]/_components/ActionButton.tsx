@@ -58,6 +58,7 @@ export function RequestInvitationButton({
 
                 if (!response.result) {
                     // TODO: Add a toast for showing the error
+                    alert(response.error);
 
                     return;
                 }

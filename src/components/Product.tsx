@@ -10,8 +10,8 @@ export default function Product({ product }: { product: P }) {
                 <Image
                     src={product.image}
                     alt={product.name}
-                    width={1024}
-                    height={1024}
+                    width={1920}
+                    height={1080}
                     priority
                     className="aspect-video w-full rounded-lg object-cover"
                 />
@@ -24,7 +24,7 @@ export default function Product({ product }: { product: P }) {
                     <h1>{product.name}</h1>
                 </div>
                 <p className="font-mono">
-                    {product.price ? `${formatUsd(product.price)}` : "Free"}
+                    {product.price ? `${formatUsd(product.price)} USD` : "Free"}
                 </p>
             </main>
             <footer className="px-2 md:px-4">

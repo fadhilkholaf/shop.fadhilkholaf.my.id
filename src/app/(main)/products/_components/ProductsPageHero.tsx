@@ -24,7 +24,7 @@ export default function ProductsPageHero({
                 <h1 className="text-4xl md:text-6xl xl:text-8xl">
                     Products 📃
                 </h1>
-                <p>Take it if you want it! 👇🏿</p>
+                <p>Take a look! 👇🏿</p>
             </header>
             <main>
                 <ul className="grid grid-cols-1 gap-x-8 gap-y-8 md:gap-y-16 lg:grid-cols-2">

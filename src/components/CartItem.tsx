@@ -24,8 +24,8 @@ export default function CartItem({ product }: { product: Product }) {
                     <Image
                         src={product.image}
                         alt={product.name}
-                        width={1024}
-                        height={1024}
+                        width={1920}
+                        height={1080}
                         priority
                         className="border-secondary aspect-video h-fit w-32 rounded-lg border-2 object-cover md:w-60"
                     />

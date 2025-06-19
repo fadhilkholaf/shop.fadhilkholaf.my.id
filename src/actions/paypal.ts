@@ -35,15 +35,11 @@ export async function createPaypalOrder(
                     {
                         amount: {
                             currencyCode: "USD",
-                            value: (totalPrice * 1.12).toFixed(2),
+                            value: totalPrice.toString(),
                             breakdown: {
                                 itemTotal: {
                                     currencyCode: "USD",
-                                    value: totalPrice.toFixed(2),
-                                },
-                                taxTotal: {
-                                    currencyCode: "USD",
-                                    value: (totalPrice * 0.12).toFixed(2),
+                                    value: totalPrice.toString(),
                                 },
                             },
                         },
@@ -54,11 +50,7 @@ export async function createPaypalOrder(
                                 quantity: "1",
                                 unitAmount: {
                                     currencyCode: "USD",
-                                    value: product.price.toFixed(2),
-                                },
-                                tax: {
-                                    currencyCode: "USD",
-                                    value: (product.price * 0.12).toFixed(2),
+                                    value: product.price.toString(),
                                 },
                                 imageUrl: product.image,
                                 url: `https://shop.fadhilkholaf.my.id/products/${product.publicId}`,

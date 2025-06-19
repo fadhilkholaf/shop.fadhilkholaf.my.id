@@ -26,7 +26,7 @@ export default async function Navbar() {
             <nav className={cn("layout", "py-2", "flex gap-x-8 md:gap-x-16")}>
                 <header>
                     <Link href="/">
-                        <h4>Shop.</h4>
+                        <h4>shop.</h4>
                     </Link>
                 </header>
                 <main className="w-full">
