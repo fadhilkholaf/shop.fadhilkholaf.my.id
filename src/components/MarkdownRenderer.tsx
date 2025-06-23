@@ -33,9 +33,22 @@ export default function MarkdownRenderer({ children }: { children?: string }) {
 
 function CustomA({ href, ...props }: ComponentPropsWithoutRef<"a">) {
     if (href && href.startsWith("/")) {
-        return <Link href={href} {...props} />;
+        return (
+            <Link
+                href={href}
+                className="underline underline-offset-2"
+                {...props}
+            />
+        );
     }
-    return <a href={href} target="_blank" {...props} />;
+    return (
+        <a
+            href={href}
+            target="_blank"
+            className="underline underline-offset-2"
+            {...props}
+        />
+    );
 }
 
 function CustomBlockquote({
