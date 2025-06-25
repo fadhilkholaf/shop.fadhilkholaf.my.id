@@ -7,7 +7,7 @@ const privacyPolicy = `
 
 How we collect users data.
 
-## Collected Data
+### Collected Data
 
 We collected users data from GitHub such as: 
 
@@ -15,19 +15,19 @@ We collected users data from GitHub such as:
 - User name.
 - User profile photo.
 
-## Purpose of the Data
+### Purpose of the Data
 
 Data collected is used for working with GitHub API and managing users session.
 
-## Data Sharing
+### Data Sharing
 
 We don't share collected user data outside our application.
 
-## How Long the Data is Collected
+### How Long the Data is Collected
 
 The data is don't have expiration time unless the user requested a deletion.
 
-## Data Deletion
+### Data Deletion
 
 Users can request data deletion personally through this email [fadhilkholafbusiness@gmail.com](mailto:fadhilkholafbusiness@gmail.com)
 `;
